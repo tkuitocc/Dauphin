@@ -8,8 +8,16 @@
 import SwiftUI
 
 struct SettingView: View {
+    @StateObject private var viewModel = AuthViewModel()
+    
     var body: some View {
-        Text("setting")
+        Group {
+            if viewModel.isLoggedIn {
+                LibMainView(viewModel: viewModel)
+            } else {
+                LibSSOLoginView(viewModel: viewModel)
+            }
+        }
     }
 }
 

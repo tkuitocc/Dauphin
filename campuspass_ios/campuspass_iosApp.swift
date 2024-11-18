@@ -12,6 +12,14 @@ struct campuspass_iosApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .task {
+                    do {
+                        try await KeyConstants.loadAPIKeys()
+                        print("API Keys Loaded Successfully")
+                    } catch {
+                        print("Failed to load API keys. Error: \(error)")
+                    }
+                }
         }
     }
 }
