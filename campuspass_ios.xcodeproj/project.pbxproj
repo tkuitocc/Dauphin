@@ -29,9 +29,22 @@
 		18B368342CE5FA130027FEBE /* campuspass_iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = campuspass_iosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		182948842CEA34D200D0F31C /* Exceptions for "campuspass_ios" folder in "campuspass_ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			assetTagsByRelativePath = {
+				APIKEYS.json = (APIKeys, );
+			};
+			target = 18B368182CE5FA110027FEBE /* campuspass_ios */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		18B3681B2CE5FA110027FEBE /* campuspass_ios */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				182948842CEA34D200D0F31C /* Exceptions for "campuspass_ios" folder in "campuspass_ios" target */,
+			);
 			path = campuspass_ios;
 			sourceTree = "<group>";
 		};
@@ -170,6 +183,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					APIKeys,
+				);
 				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
