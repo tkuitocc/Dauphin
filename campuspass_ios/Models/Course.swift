@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 // MARK: - Course Model
 struct Course: Identifiable, Hashable {
     var id = UUID()
@@ -13,5 +14,8 @@ struct Course: Identifiable, Hashable {
     var room: String
     var teacher: String
     var time: String
+    var startTime: String
+    var endTime: String
     var stdNo: String
 }
+

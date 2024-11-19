@@ -94,11 +94,61 @@ class CourseViewModel: ObservableObject {
                     if let timeSessions = courseData["timePlase"] as? [String: Any],
                        let sesses = timeSessions["sesses"] as? [String] {
                         let time = sesses.joined(separator: ", ")
-                        weekCourses[weekIndex - 1].append(Course(name: name, room: room, teacher: teacher, time: time, stdNo: seat_no))
+                        var startTime: String = ""
+                        var endTime: String = ""
+
+                        if let firstSession = sesses.first, let lastSession = sesses.last,
+                           let firstSessionInt = Int(firstSession), let lastSessionInt = Int(lastSession) {
+                            startTime = sessionToStartTime(session: firstSessionInt)
+                            endTime = sessionToEndTime(session: lastSessionInt)
+                        }
+
+                        weekCourses[weekIndex - 1].append(Course(name: name, room: room, teacher: teacher, time: time, startTime: startTime, endTime: endTime, stdNo: seat_no))
                     }
                 }
             }
         }
         return weekCourses
     }
+
+    private func sessionToStartTime(session: Int) -> String {
+        switch session {
+        case 1: return "08:10"
+        case 2: return "09:10"
+        case 3: return "10:10"
+        case 4: return "11:10"
+        case 5: return "12:10"
+        case 6: return "13:10"
+        case 7: return "14:10"
+        case 8: return "15:10"
+        case 9: return "16:10"
+        case 10: return "17:10"
+        case 11: return "18:10"
+        case 12: return "19:10"
+        case 13: return "20:10"
+        case 14: return "21:10"
+        default: return "Unknown Time"
+        }
+    }
+
+    private func sessionToEndTime(session: Int) -> String {
+        switch session {
+        case 1: return "09:00"
+        case 2: return "10:00"
+        case 3: return "11:00"
+        case 4: return "12:00"
+        case 5: return "13:00"
+        case 6: return "14:00"
+        case 7: return "15:00"
+        case 8: return "16:00"
+        case 9: return "17:00"
+        case 10: return "18:00"
+        case 11: return "19:00"
+        case 12: return "20:00"
+        case 13: return "21:00"
+        case 14: return "22:00"
+        default: return "Unknown Time"
+        }
+    }
+
 }

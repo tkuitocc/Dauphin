@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingView: View {
-    @StateObject private var viewModel = AuthViewModel()
+    @ObservedObject var viewModel: AuthViewModel
     
     var body: some View {
         Group {
@@ -22,5 +22,5 @@ struct SettingView: View {
 }
 
 #Preview {
-    SettingView()
+    SettingView(viewModel: AuthViewModel())
 }

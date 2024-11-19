@@ -9,32 +9,27 @@ import SwiftUI
 import Foundation
 
 struct CourseScheduleView: View {
-    @StateObject private var AuthviewModel = AuthViewModel()
-    let viewModel = CourseViewModel()
-    var ssoStuNo: String {
-        UserDefaults.standard.string(forKey: Constants.ssoTokenKey) ?? ""
-    }
-    
-    
+    @ObservedObject var authViewModel: AuthViewModel
+    @StateObject var viewModel = CourseViewModel()
     
     var body: some View {
         Group {
-            if AuthviewModel.isLoggedIn {
+            if authViewModel.isLoggedIn {
                 CourseScheduleByDayView(courseViewModel: viewModel)
                     .padding(20)
                     .onAppear {
-                        if !ssoStuNo.isEmpty {
-                            viewModel.fetchCourses(with: ssoStuNo)
+                        if !authViewModel.ssoStuNo.isEmpty {
+                            viewModel.fetchCourses(with: authViewModel.ssoStuNo)
                             print(viewModel.weekCourses)
                         }
                     }
             } else {
-                LibSSOLoginView(viewModel: AuthviewModel)
+                LibSSOLoginView(viewModel: authViewModel)
             }
         }
     }
 }
 
 #Preview {
-    CourseScheduleView()
+    CourseScheduleView(authViewModel: AuthViewModel())
 }

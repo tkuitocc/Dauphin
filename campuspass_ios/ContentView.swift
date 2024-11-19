@@ -8,18 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = AuthViewModel()
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
-        TabView {
+        TabView() {
             Tab("Home", systemImage: "house.fill") {
                 HomeView()
             }
+            
             Tab("Course", systemImage: "calendar.day.timeline.left"){
-                CourseScheduleView()
+                CourseScheduleView(authViewModel: viewModel)
             }
+            
             Tab("setting", systemImage: "gear") {
-                SettingView()
+                SettingView(viewModel: viewModel)
             }
         }
+        .accentColor(colorScheme == .dark ? .orange : .blue)
     }
 }
 

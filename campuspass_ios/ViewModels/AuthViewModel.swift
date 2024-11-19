@@ -15,6 +15,8 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    @Published var ssoStuNo: String = UserDefaults.standard.string(forKey: Constants.ssoTokenKey) ?? ""
+    
     func login(with token: String) {
         print("正在登入，token: \(token)")
         UserDefaults.standard.set(token, forKey: Constants.ssoTokenKey)
@@ -38,6 +40,7 @@ class AuthViewModel: ObservableObject {
         
         DispatchQueue.main.async {
             self.isLoggedIn = false
+            self.ssoStuNo = ""
             print("已登出")
         }
     }
