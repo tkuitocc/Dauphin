@@ -9,32 +9,27 @@ import SwiftUI
 import WebKit
 
 class AuthViewModel: ObservableObject {
-    @AppStorage(Constants.isLoggedInKey) var isLoggedIn: Bool = false {
-        didSet {
-            UserDefaults.standard.set(isLoggedIn, forKey: Constants.isLoggedInKey)
-        }
-    }
-    
-    @Published var ssoStuNo: String = UserDefaults.standard.string(forKey: Constants.ssoTokenKey) ?? ""
-    
+    @AppStorage(Constants.isLoggedInKey) var isLoggedIn: Bool = false
+    @AppStorage(Constants.ssoTokenKey) var ssoStuNo: String = ""
+
     func login(with token: String) {
         print("正在登入，token: \(token)")
-        UserDefaults.standard.set(token, forKey: Constants.ssoTokenKey)
         DispatchQueue.main.async {
+            self.ssoStuNo = token
             self.isLoggedIn = true
             print("已更新登入狀態")
         }
     }
-    
+
     func logout() {
         UserDefaults.standard.removeObject(forKey: Constants.ssoTokenKey)
         
         let dataStore = WKWebsiteDataStore.default()
         dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
             records.forEach { record in
-                dataStore.removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {
+                dataStore.removeData(ofTypes: record.dataTypes, for: [record]) {
                     print("已清除紀錄: \(record.displayName)")
-                })
+                }
             }
         }
         

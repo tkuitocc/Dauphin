@@ -15,14 +15,24 @@ struct CourseScheduleView: View {
     var body: some View {
         Group {
             if authViewModel.isLoggedIn {
-                CourseScheduleByDayView(courseViewModel: viewModel)
-                    .padding(20)
-                    .onAppear {
-                        if !authViewModel.ssoStuNo.isEmpty {
-                            viewModel.fetchCourses(with: authViewModel.ssoStuNo)
-                            print(viewModel.weekCourses)
+                if viewModel.isLoading {
+                    ProgressView()
+                } else {
+                    CourseScheduleByDayView(courseViewModel: viewModel)
+                        .padding(20)
+                        .refreshable {
+                            if !authViewModel.ssoStuNo.isEmpty {
+                                viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                print("Refreshing courses, isLoading:", viewModel.isLoading)
+                            }
                         }
-                    }
+                        .onAppear {
+                            if !authViewModel.ssoStuNo.isEmpty {
+                                viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                print("Refreshing courses, isLoading:", viewModel.isLoading)
+                            }
+                        }
+                }
             } else {
                 LibSSOLoginView(viewModel: authViewModel)
             }

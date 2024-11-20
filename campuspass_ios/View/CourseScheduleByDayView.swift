@@ -65,11 +65,11 @@ struct CourseScheduleByDayView_Previews: PreviewProvider {
     static var previews: some View {
         // Mock data for preview
         let mockData = [
-            [Course(name: "Math", room: "101", teacher: "Dr. Smith", time: "8:10 - 9:00", startTime: "8:10", endTime: "9:00", stdNo: "69")],
-            [Course(name: "Science", room: "102", teacher: "Prof. Johnson", time: "11:00 - 12:00", startTime: "11:00", endTime: "12:00", stdNo: "69")],
-            [Course(name: "History", room: "103", teacher: "Ms. Davis", time: "13:00 - 14:00", startTime: "13:00", endTime: "14:00", stdNo: "69")],
-            [Course(name: "Art", room: "104", teacher: "Mr. Brown", time: "14:00 - 15:00", startTime: "14:00", endTime: "15:00", stdNo: "69")],
-            [Course(name: "Physical Education", room: "Gym", teacher: "Coach Green", time: "15:00 - 16:00", startTime: "15:00", endTime: "16:00", stdNo: "69")]
+            [Course(name: "Math", room: "101", teacher: "Dr. Smith", time: "1", startTime: "8:10", endTime: "9:00", stdNo: "69")],
+            [Course(name: "Science", room: "102", teacher: "Prof. Johnson", time: "4", startTime: "11:00", endTime: "12:00", stdNo: "69")],
+            [Course(name: "History", room: "103", teacher: "Ms. Davis", time: "6", startTime: "13:00", endTime: "14:00", stdNo: "69")],
+            [Course(name: "Art", room: "104", teacher: "Mr. Brown", time: "7", startTime: "14:00", endTime: "15:00", stdNo: "69")],
+            [Course(name: "Physical Education", room: "Gym", teacher: "Coach Green", time: "8", startTime: "15:00", endTime: "16:00", stdNo: "69")]
         ]
         let courseViewModel = CourseViewModel(mockData: mockData)
         
