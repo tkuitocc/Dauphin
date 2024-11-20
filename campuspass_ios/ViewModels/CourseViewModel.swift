@@ -43,41 +43,61 @@ class CourseViewModel: ObservableObject {
     }
 
     func fetchCourses(with stdNo: String) {
-        if let encrypted = helper?.encrypt(data: "20220901200540356,"+stdNo){
-            if let q = encrypted.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed){
-                guard let url = URL(string: "https://ilifeapi.az.tku.edu.tw/api/ilifeStuClassApi?q=\(q)") else {
-                    self.errorMessage = "invalid URL"
-                    return
-                }
-                
-                var request = URLRequest(url: url, timeoutInterval: Double.infinity)
-                request.httpMethod = "GET"
-
-                isLoading = true
-
-                URLSession.shared.dataTaskPublisher(for: request)
-                    .tryMap { data, response -> [String: Any] in
-                        let json = try JSONSerialization.jsonObject(with: data, options: [])
-                        guard let jsonDict = json as? [String: Any] else {
-                            throw URLError(.badServerResponse)
-                        }
-                        return jsonDict
-                    }
-                    .receive(on: DispatchQueue.main)
-                    .sink { [weak self] completion in
-                        switch completion {
-                        case .finished:
-                            self?.isLoading = false
-                        case .failure(let error):
-                            self?.isLoading = false
-                            self?.errorMessage = "\(error.localizedDescription)"
-                        }
-                    } receiveValue: { [weak self] apiData in
-                        self?.weekCourses = self?.parseCourseData(apiData: apiData) ?? []
-                    }
-                    .store(in: &cancellables)
-            }
+        guard let helper = helper else {
+            self.errorMessage = "Encryption helper not initialized"
+            self.isLoading = false
+            return
         }
+
+        guard let encrypted = helper.encrypt(data: "20220901200540356," + stdNo) else {
+            self.errorMessage = "Encryption failed"
+            self.isLoading = false
+            return
+        }
+
+        guard let q = encrypted.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            self.errorMessage = "Failed to encode query parameter"
+            self.isLoading = false
+            return
+        }
+
+        guard let url = URL(string: "https://ilifeapi.az.tku.edu.tw/api/ilifeStuClassApi?q=\(q)") else {
+            self.errorMessage = "Invalid URL"
+            self.isLoading = false
+            return
+        }
+
+        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
+        request.httpMethod = "GET"
+
+        isLoading = true
+
+        URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response -> [String: Any] in
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                guard let jsonDict = json as? [String: Any] else {
+                    throw URLError(.badServerResponse)
+                }
+                return jsonDict
+            }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                switch completion {
+                case .finished:
+                    print("Request completed successfully")
+                    self?.isLoading = false
+                case .failure(let error):
+                    print("Request failed with error: \(error.localizedDescription)")
+                    self?.isLoading = false
+                    self?.errorMessage = error.localizedDescription
+                }
+            } receiveValue: { [weak self] apiData in
+                self?.weekCourses = self?.parseCourseData(apiData: apiData) ?? []
+                self?.isLoading = false
+                print("b \(String(describing: self?.isLoading))")
+            }
+            .store(in: &cancellables)
+
     }
 
     private func parseCourseData(apiData: [String: Any]) -> [[Course]] {
