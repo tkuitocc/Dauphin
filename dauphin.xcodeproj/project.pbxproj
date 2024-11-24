@@ -24,28 +24,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		18B368192CE5FA110027FEBE /* campuspass_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = campuspass_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		18B3682A2CE5FA130027FEBE /* campuspass_iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = campuspass_iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		18B368342CE5FA130027FEBE /* campuspass_iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = campuspass_iosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		18B368192CE5FA110027FEBE /* dauphin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dauphin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		18B3682A2CE5FA130027FEBE /* dauphinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dauphinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		18B368342CE5FA130027FEBE /* dauphinUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dauphinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		182948842CEA34D200D0F31C /* Exceptions for "campuspass_ios" folder in "campuspass_ios" target */ = {
+		182948842CEA34D200D0F31C /* Exceptions for "dauphin" folder in "dauphin" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			assetTagsByRelativePath = {
 				APIKEYS.json = (APIKeys, );
 			};
-			target = 18B368182CE5FA110027FEBE /* campuspass_ios */;
+			target = 18B368182CE5FA110027FEBE /* dauphin */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		18B3681B2CE5FA110027FEBE /* campuspass_ios */ = {
+		18B3681B2CE5FA110027FEBE /* dauphin */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				182948842CEA34D200D0F31C /* Exceptions for "campuspass_ios" folder in "campuspass_ios" target */,
+				182948842CEA34D200D0F31C /* Exceptions for "dauphin" folder in "dauphin" target */,
 			);
-			path = campuspass_ios;
+			path = dauphin;
 			sourceTree = "<group>";
 		};
 		18B3682D2CE5FA130027FEBE /* campuspass_iosTests */ = {
@@ -88,7 +88,7 @@
 		18B368102CE5FA110027FEBE = {
 			isa = PBXGroup;
 			children = (
-				18B3681B2CE5FA110027FEBE /* campuspass_ios */,
+				18B3681B2CE5FA110027FEBE /* dauphin */,
 				18B3682D2CE5FA130027FEBE /* campuspass_iosTests */,
 				18B368372CE5FA130027FEBE /* campuspass_iosUITests */,
 				18B3681A2CE5FA110027FEBE /* Products */,
@@ -98,9 +98,9 @@
 		18B3681A2CE5FA110027FEBE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				18B368192CE5FA110027FEBE /* campuspass_ios.app */,
-				18B3682A2CE5FA130027FEBE /* campuspass_iosTests.xctest */,
-				18B368342CE5FA130027FEBE /* campuspass_iosUITests.xctest */,
+				18B368192CE5FA110027FEBE /* dauphin.app */,
+				18B3682A2CE5FA130027FEBE /* dauphinTests.xctest */,
+				18B368342CE5FA130027FEBE /* dauphinUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,9 +108,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		18B368182CE5FA110027FEBE /* campuspass_ios */ = {
+		18B368182CE5FA110027FEBE /* dauphin */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 18B3683E2CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "campuspass_ios" */;
+			buildConfigurationList = 18B3683E2CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "dauphin" */;
 			buildPhases = (
 				18B368152CE5FA110027FEBE /* Sources */,
 				18B368162CE5FA110027FEBE /* Frameworks */,
@@ -121,18 +121,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				18B3681B2CE5FA110027FEBE /* campuspass_ios */,
+				18B3681B2CE5FA110027FEBE /* dauphin */,
 			);
-			name = campuspass_ios;
+			name = dauphin;
 			packageProductDependencies = (
 			);
 			productName = campuspass_ios;
-			productReference = 18B368192CE5FA110027FEBE /* campuspass_ios.app */;
+			productReference = 18B368192CE5FA110027FEBE /* dauphin.app */;
 			productType = "com.apple.product-type.application";
 		};
-		18B368292CE5FA130027FEBE /* campuspass_iosTests */ = {
+		18B368292CE5FA130027FEBE /* dauphinTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 18B368412CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "campuspass_iosTests" */;
+			buildConfigurationList = 18B368412CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "dauphinTests" */;
 			buildPhases = (
 				18B368262CE5FA130027FEBE /* Sources */,
 				18B368272CE5FA130027FEBE /* Frameworks */,
@@ -146,16 +146,16 @@
 			fileSystemSynchronizedGroups = (
 				18B3682D2CE5FA130027FEBE /* campuspass_iosTests */,
 			);
-			name = campuspass_iosTests;
+			name = dauphinTests;
 			packageProductDependencies = (
 			);
 			productName = campuspass_iosTests;
-			productReference = 18B3682A2CE5FA130027FEBE /* campuspass_iosTests.xctest */;
+			productReference = 18B3682A2CE5FA130027FEBE /* dauphinTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		18B368332CE5FA130027FEBE /* campuspass_iosUITests */ = {
+		18B368332CE5FA130027FEBE /* dauphinUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 18B368442CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "campuspass_iosUITests" */;
+			buildConfigurationList = 18B368442CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "dauphinUITests" */;
 			buildPhases = (
 				18B368302CE5FA130027FEBE /* Sources */,
 				18B368312CE5FA130027FEBE /* Frameworks */,
@@ -169,11 +169,11 @@
 			fileSystemSynchronizedGroups = (
 				18B368372CE5FA130027FEBE /* campuspass_iosUITests */,
 			);
-			name = campuspass_iosUITests;
+			name = dauphinUITests;
 			packageProductDependencies = (
 			);
 			productName = campuspass_iosUITests;
-			productReference = 18B368342CE5FA130027FEBE /* campuspass_iosUITests.xctest */;
+			productReference = 18B368342CE5FA130027FEBE /* dauphinUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -202,7 +202,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 18B368142CE5FA110027FEBE /* Build configuration list for PBXProject "campuspass_ios" */;
+			buildConfigurationList = 18B368142CE5FA110027FEBE /* Build configuration list for PBXProject "dauphin" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -216,9 +216,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				18B368182CE5FA110027FEBE /* campuspass_ios */,
-				18B368292CE5FA130027FEBE /* campuspass_iosTests */,
-				18B368332CE5FA130027FEBE /* campuspass_iosUITests */,
+				18B368182CE5FA110027FEBE /* dauphin */,
+				18B368292CE5FA130027FEBE /* dauphinTests */,
+				18B368332CE5FA130027FEBE /* dauphinUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -274,12 +274,12 @@
 /* Begin PBXTargetDependency section */
 		18B3682C2CE5FA130027FEBE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 18B368182CE5FA110027FEBE /* campuspass_ios */;
+			target = 18B368182CE5FA110027FEBE /* dauphin */;
 			targetProxy = 18B3682B2CE5FA130027FEBE /* PBXContainerItemProxy */;
 		};
 		18B368362CE5FA130027FEBE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 18B368182CE5FA110027FEBE /* campuspass_ios */;
+			target = 18B368182CE5FA110027FEBE /* dauphin */;
 			targetProxy = 18B368352CE5FA130027FEBE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -404,10 +404,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = campuspass_ios/campuspass_ios.entitlements;
+				CODE_SIGN_ENTITLEMENTS = dauphin/dauphin.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"campuspass_ios/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"dauphin/Preview Content\"";
 				DEVELOPMENT_TEAM = J7DG8X424B;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -443,10 +443,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = campuspass_ios/campuspass_ios.entitlements;
+				CODE_SIGN_ENTITLEMENTS = dauphin/dauphin.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"campuspass_ios/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"dauphin/Preview Content\"";
 				DEVELOPMENT_TEAM = J7DG8X424B;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -495,7 +495,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/campuspass_ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/campuspass_ios";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dauphin.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/dauphin";
 				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Debug;
@@ -518,7 +518,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/campuspass_ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/campuspass_ios";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dauphin.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/dauphin";
 				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Release;
@@ -570,7 +570,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		18B368142CE5FA110027FEBE /* Build configuration list for PBXProject "campuspass_ios" */ = {
+		18B368142CE5FA110027FEBE /* Build configuration list for PBXProject "dauphin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				18B3683C2CE5FA130027FEBE /* Debug */,
@@ -579,7 +579,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		18B3683E2CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "campuspass_ios" */ = {
+		18B3683E2CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "dauphin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				18B3683F2CE5FA130027FEBE /* Debug */,
@@ -588,7 +588,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		18B368412CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "campuspass_iosTests" */ = {
+		18B368412CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "dauphinTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				18B368422CE5FA130027FEBE /* Debug */,
@@ -597,7 +597,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		18B368442CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "campuspass_iosUITests" */ = {
+		18B368442CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "dauphinUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				18B368452CE5FA130027FEBE /* Debug */,

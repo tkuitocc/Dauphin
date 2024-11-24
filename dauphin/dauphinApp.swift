@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct campuspass_iosApp: App {
+struct dauphinApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
