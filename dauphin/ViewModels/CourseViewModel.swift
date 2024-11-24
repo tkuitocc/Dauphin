@@ -17,7 +17,7 @@ class CourseViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
         
     init() {
-        self.weekCourses = Array(repeating: [Course](), count: 5)
+        self.weekCourses = Array(repeating: [Course](), count: 6)
         Task {
             await initializeHelper()
         }
@@ -114,16 +114,18 @@ class CourseViewModel: ObservableObject {
                     if let timeSessions = courseData["timePlase"] as? [String: Any],
                        let sesses = timeSessions["sesses"] as? [String] {
                         let time = sesses.joined(separator: ", ")
-                        var startTime: String = ""
-                        var endTime: String = ""
 
-                        if let firstSession = sesses.first, let lastSession = sesses.last,
-                           let firstSessionInt = Int(firstSession), let lastSessionInt = Int(lastSession) {
-                            startTime = sessionToStartTime(session: firstSessionInt)
-                            endTime = sessionToEndTime(session: lastSessionInt)
+                        if let firstSession = sesses.first,
+                           let lastSession = sesses.last,
+                           let firstSessionInt = Int(firstSession),
+                           let lastSessionInt = Int(lastSession),
+                           let start = sessionToStartTime(session: firstSessionInt),
+                           let end = sessionToEndTime(session: lastSessionInt) {
+                            
+                            weekCourses[weekIndex - 1].append(
+                                Course(name: name, room: room, teacher: teacher, time: time, startTime: start, endTime: end, stdNo: seat_no)
+                            )
                         }
-
-                        weekCourses[weekIndex - 1].append(Course(name: name, room: room, teacher: teacher, time: time, startTime: startTime, endTime: endTime, stdNo: seat_no))
                     }
                 }
             }
@@ -131,44 +133,58 @@ class CourseViewModel: ObservableObject {
         return weekCourses
     }
 
-    private func sessionToStartTime(session: Int) -> String {
+    private func sessionToStartTime(session: Int) -> Date? {
+        let calendar = Calendar.current
+        var components = DateComponents()
+        components.year = 1989
+        components.month = 6
+        components.day = 4
+        components.minute = 10
         switch session {
-        case 1: return "08:10"
-        case 2: return "09:10"
-        case 3: return "10:10"
-        case 4: return "11:10"
-        case 5: return "12:10"
-        case 6: return "13:10"
-        case 7: return "14:10"
-        case 8: return "15:10"
-        case 9: return "16:10"
-        case 10: return "17:10"
-        case 11: return "18:10"
-        case 12: return "19:10"
-        case 13: return "20:10"
-        case 14: return "21:10"
-        default: return "Unknown Time"
+        case 1: components.hour = 8
+        case 2: components.hour = 9
+        case 3: components.hour = 10
+        case 4: components.hour = 11
+        case 5: components.hour = 12
+        case 6: components.hour = 13
+        case 7: components.hour = 14
+        case 8: components.hour = 15
+        case 9: components.hour = 16
+        case 10: components.hour = 17
+        case 11: components.hour = 18
+        case 12: components.hour = 19
+        case 13: components.hour = 20
+        case 14: components.hour = 21
+        default: return nil
         }
+        return calendar.date(from: components)
     }
 
-    private func sessionToEndTime(session: Int) -> String {
+    private func sessionToEndTime(session: Int) -> Date? {
+        let calendar = Calendar.current
+        var components = DateComponents()
+        components.year = 1989
+        components.month = 6
+        components.day = 4
+        components.minute = 0
         switch session {
-        case 1: return "09:00"
-        case 2: return "10:00"
-        case 3: return "11:00"
-        case 4: return "12:00"
-        case 5: return "13:00"
-        case 6: return "14:00"
-        case 7: return "15:00"
-        case 8: return "16:00"
-        case 9: return "17:00"
-        case 10: return "18:00"
-        case 11: return "19:00"
-        case 12: return "20:00"
-        case 13: return "21:00"
-        case 14: return "22:00"
-        default: return "Unknown Time"
+        case 1: components.hour = 9
+        case 2: components.hour = 10
+        case 3: components.hour = 11
+        case 4: components.hour = 12
+        case 5: components.hour = 13
+        case 6: components.hour = 14
+        case 7: components.hour = 15
+        case 8: components.hour = 16
+        case 9: components.hour = 17
+        case 10: components.hour = 18
+        case 11: components.hour = 19
+        case 12: components.hour = 20
+        case 13: components.hour = 21
+        case 14: components.hour = 22
+        default: return nil
         }
+        return calendar.date(from: components)
     }
 
 }

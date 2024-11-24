@@ -27,8 +27,8 @@ struct CourseScheduleByDayView: View {
         VStack(spacing: 16) {
             // Weekday Selector
             HStack(spacing: 20) {
-                ForEach(0..<5, id: \.self) { index in
-                    let day = ["Mo", "Tu", "We", "Th", "Fr"][index]
+                ForEach(0..<6, id: \.self) { index in
+                    let day = ["Mo", "Tu", "We", "Th", "Fr", "Sa"][index]
                 
                     VStack {
                         Image(systemName: "calendar")
@@ -56,24 +56,12 @@ struct CourseScheduleByDayView: View {
                     }
                 }
             }
+            .scrollIndicators(.hidden)
         }
     }
 }
 
-// MARK: - Preview
-struct CourseScheduleByDayView_Previews: PreviewProvider {
-    static var previews: some View {
-        // Mock data for preview
-        let mockData = [
-            [Course(name: "Math", room: "101", teacher: "Dr. Smith", time: "1", startTime: "8:10", endTime: "9:00", stdNo: "69")],
-            [Course(name: "Science", room: "102", teacher: "Prof. Johnson", time: "4", startTime: "11:00", endTime: "12:00", stdNo: "69")],
-            [Course(name: "History", room: "103", teacher: "Ms. Davis", time: "6", startTime: "13:00", endTime: "14:00", stdNo: "69")],
-            [Course(name: "Art", room: "104", teacher: "Mr. Brown", time: "7", startTime: "14:00", endTime: "15:00", stdNo: "69")],
-            [Course(name: "Physical Education", room: "Gym", teacher: "Coach Green", time: "8", startTime: "15:00", endTime: "16:00", stdNo: "69")]
-        ]
-        let courseViewModel = CourseViewModel(mockData: mockData)
-        
-        CourseScheduleByDayView(courseViewModel: courseViewModel)
-            .previewDevice("iPhone 16")
-    }
+#Preview{
+    let courseViewModel = CourseViewModel(mockData: mockData)
+    CourseScheduleByDayView(courseViewModel: courseViewModel)
 }

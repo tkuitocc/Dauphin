@@ -10,8 +10,8 @@ struct CourseCardView: View {
     let courseName: String
     let roomNumber: String
     let teacherName: String
-    let StartTime: String
-    let EndTime: String
+    let StartTime: Date
+    let EndTime: Date
     let stdNo: String
 
     @Environment(\.colorScheme) var colorScheme
@@ -28,7 +28,7 @@ struct CourseCardView: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing) {
-                    Text("\(StartTime) ~ \(EndTime)")
+                    Text("\(formatTime(StartTime)) ~ \(formatTime(EndTime))")
                         .font(.footnote)
                         .foregroundColor(colorScheme == .dark ? .orange : .green)
                         .padding(.bottom, 20)
@@ -51,6 +51,12 @@ struct CourseCardView: View {
         }
 }
 
+func formatTime(_ date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "HH:mm"
+    return formatter.string(from: date)
+}
+
 #Preview {
-    CourseCardView(courseName: "計算機組織", roomNumber: "E305", teacherName: "我", StartTime: "8:10", EndTime: "9:00" , stdNo: "178")
+    CourseCardView(courseName: "計算機組織", roomNumber: "E305", teacherName: "我", StartTime: stringToTime("8:10")!, EndTime: stringToTime("9:00")! , stdNo: "178")
 }
