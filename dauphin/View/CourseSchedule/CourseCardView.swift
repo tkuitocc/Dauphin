@@ -51,12 +51,8 @@ struct CourseCardView: View {
         }
 }
 
-func formatTime(_ date: Date) -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "HH:mm"
-    return formatter.string(from: date)
-}
-
 #Preview {
     CourseCardView(courseName: "計算機組織", roomNumber: "E305", teacherName: "我", StartTime: stringToTime("8:10")!, EndTime: stringToTime("9:00")! , stdNo: "178")
 }
+
+

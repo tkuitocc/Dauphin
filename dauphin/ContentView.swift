@@ -12,20 +12,39 @@ struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        TabView() {
-            Tab("Home", systemImage: "house.fill") {
-                HomeView()
+        if #available(iOS 18.0, *) {
+            TabView() {
+                Tab("Course", systemImage: "calendar.day.timeline.left"){
+                    CourseScheduleView(authViewModel: viewModel)
+                }
+                
+                //Tab("Library", systemImage: "books.vertical.fill"){
+                //    LibraryView(authViewModel: viewModel)
+                //}
+                
+                //Tab("other", systemImage: "chart.line.text.clipboard"){
+                //    OtherView()
+                //}
+                
+                Tab("setting", systemImage: "gear") {
+                    SettingView(viewModel: viewModel)
+                }
+                
             }
             
-            Tab("Course", systemImage: "calendar.day.timeline.left"){
+        } else {
+            TabView {
                 CourseScheduleView(authViewModel: viewModel)
-            }
-            
-            Tab("setting", systemImage: "gear") {
+                    .tabItem {
+                        Label("Course", systemImage: "calendar.day.timeline.left")
+                    }
                 SettingView(viewModel: viewModel)
-            }
+                    .tabItem {
+                        Label("setting", systemImage: "gear")
+                    }
+                }
         }
-        .accentColor(colorScheme == .dark ? .orange : .blue)
+        
     }
 }
 

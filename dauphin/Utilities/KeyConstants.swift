@@ -24,8 +24,15 @@ enum KeyConstants {
 
         do {
             let data = try Data(contentsOf: url)
-            APIKeys.storage = try JSONDecoder().decode([String: String].self, from: data)
+            let apiKeys = try JSONDecoder().decode([String: String].self, from: data)
+            APIKeys.storage = apiKeys
             print("Loaded APIKeys: \(APIKeys.storage)") // Debug print to confirm successful loading
+            
+            // Save keys to Keychain
+            for (key, value) in apiKeys {
+                KeychainManager.shared.save(value, forKey: key)
+            }
+            print("API keys successfully saved to Keychain.")
         } catch {
             print("Error: Failed to load or decode 'APIKEYS.json'. Details: \(error.localizedDescription)")
             throw error

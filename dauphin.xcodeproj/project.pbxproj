@@ -6,7 +6,22 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1826CDA82CF4477F00471CA4 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1826CDA72CF4477F00471CA4 /* KeychainSwift */; };
+		185C49572CF6DD8400589C39 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185C49562CF6DD8400589C39 /* WidgetKit.framework */; };
+		185C49592CF6DD8400589C39 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185C49582CF6DD8400589C39 /* SwiftUI.framework */; };
+		185C49662CF6DD8600589C39 /* CoursesWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		188D2E7F2CF81E4F005E1B52 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 188D2E7E2CF81E4F005E1B52 /* KeychainSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		185C49642CF6DD8600589C39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 18B368112CE5FA110027FEBE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 185C49532CF6DD8400589C39;
+			remoteInfo = CoursesWidgetExtension;
+		};
 		18B3682B2CE5FA130027FEBE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 18B368112CE5FA110027FEBE /* Project object */;
@@ -23,7 +38,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		185C49672CF6DD8600589C39 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				185C49662CF6DD8600589C39 /* CoursesWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CoursesWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		185C49562CF6DD8400589C39 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		185C49582CF6DD8400589C39 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		185C496C2CF6DDD900589C39 /* CoursesWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoursesWidgetExtension.entitlements; sourceTree = "<group>"; };
 		18B368192CE5FA110027FEBE /* dauphin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dauphin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B3682A2CE5FA130027FEBE /* dauphinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dauphinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B368342CE5FA130027FEBE /* dauphinUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dauphinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -37,13 +70,40 @@
 			};
 			target = 18B368182CE5FA110027FEBE /* dauphin */;
 		};
+		185C496B2CF6DD8600589C39 /* Exceptions for "CoursesWidget" folder in "CoursesWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 185C49532CF6DD8400589C39 /* CoursesWidgetExtension */;
+		};
+		185C496E2CF6E97D00589C39 /* Exceptions for "dauphin" folder in "CoursesWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/Course.swift,
+				Utilities/Constants.swift,
+				Utilities/Encrypto.swift,
+				Utilities/KeychainManager.swift,
+				ViewModels/CourseViewModel.swift,
+			);
+			target = 185C49532CF6DD8400589C39 /* CoursesWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		185C495A2CF6DD8400589C39 /* CoursesWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				185C496B2CF6DD8600589C39 /* Exceptions for "CoursesWidget" folder in "CoursesWidgetExtension" target */,
+			);
+			path = CoursesWidget;
+			sourceTree = "<group>";
+		};
 		18B3681B2CE5FA110027FEBE /* dauphin */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				182948842CEA34D200D0F31C /* Exceptions for "dauphin" folder in "dauphin" target */,
+				185C496E2CF6E97D00589C39 /* Exceptions for "dauphin" folder in "CoursesWidgetExtension" target */,
 			);
 			path = dauphin;
 			sourceTree = "<group>";
@@ -61,10 +121,21 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		185C49512CF6DD8400589C39 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				188D2E7F2CF81E4F005E1B52 /* KeychainSwift in Frameworks */,
+				185C49592CF6DD8400589C39 /* SwiftUI.framework in Frameworks */,
+				185C49572CF6DD8400589C39 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		18B368162CE5FA110027FEBE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1826CDA82CF4477F00471CA4 /* KeychainSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,12 +156,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		185C49552CF6DD8400589C39 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				185C49562CF6DD8400589C39 /* WidgetKit.framework */,
+				185C49582CF6DD8400589C39 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		18B368102CE5FA110027FEBE = {
 			isa = PBXGroup;
 			children = (
+				185C496C2CF6DDD900589C39 /* CoursesWidgetExtension.entitlements */,
 				18B3681B2CE5FA110027FEBE /* dauphin */,
 				18B3682D2CE5FA130027FEBE /* campuspass_iosTests */,
 				18B368372CE5FA130027FEBE /* campuspass_iosUITests */,
+				185C495A2CF6DD8400589C39 /* CoursesWidget */,
+				185C49552CF6DD8400589C39 /* Frameworks */,
 				18B3681A2CE5FA110027FEBE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,6 +184,7 @@
 				18B368192CE5FA110027FEBE /* dauphin.app */,
 				18B3682A2CE5FA130027FEBE /* dauphinTests.xctest */,
 				18B368342CE5FA130027FEBE /* dauphinUITests.xctest */,
+				185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,6 +192,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		185C49532CF6DD8400589C39 /* CoursesWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 185C496A2CF6DD8600589C39 /* Build configuration list for PBXNativeTarget "CoursesWidgetExtension" */;
+			buildPhases = (
+				185C49502CF6DD8400589C39 /* Sources */,
+				185C49512CF6DD8400589C39 /* Frameworks */,
+				185C49522CF6DD8400589C39 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				185C495A2CF6DD8400589C39 /* CoursesWidget */,
+			);
+			name = CoursesWidgetExtension;
+			packageProductDependencies = (
+				188D2E7E2CF81E4F005E1B52 /* KeychainSwift */,
+			);
+			productName = CoursesWidgetExtension;
+			productReference = 185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		18B368182CE5FA110027FEBE /* dauphin */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 18B3683E2CE5FA130027FEBE /* Build configuration list for PBXNativeTarget "dauphin" */;
@@ -115,16 +222,19 @@
 				18B368152CE5FA110027FEBE /* Sources */,
 				18B368162CE5FA110027FEBE /* Frameworks */,
 				18B368172CE5FA110027FEBE /* Resources */,
+				185C49672CF6DD8600589C39 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				185C49652CF6DD8600589C39 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				18B3681B2CE5FA110027FEBE /* dauphin */,
 			);
 			name = dauphin;
 			packageProductDependencies = (
+				1826CDA72CF4477F00471CA4 /* KeychainSwift */,
 			);
 			productName = campuspass_ios;
 			productReference = 18B368192CE5FA110027FEBE /* dauphin.app */;
@@ -189,6 +299,9 @@
 				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
+					185C49532CF6DD8400589C39 = {
+						CreatedOnToolsVersion = 16.1;
+					};
 					18B368182CE5FA110027FEBE = {
 						CreatedOnToolsVersion = 16.1;
 					};
@@ -211,6 +324,9 @@
 			);
 			mainGroup = 18B368102CE5FA110027FEBE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 18B3681A2CE5FA110027FEBE /* Products */;
 			projectDirPath = "";
@@ -219,11 +335,19 @@
 				18B368182CE5FA110027FEBE /* dauphin */,
 				18B368292CE5FA130027FEBE /* dauphinTests */,
 				18B368332CE5FA130027FEBE /* dauphinUITests */,
+				185C49532CF6DD8400589C39 /* CoursesWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		185C49522CF6DD8400589C39 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		18B368172CE5FA110027FEBE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -248,6 +372,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		185C49502CF6DD8400589C39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		18B368152CE5FA110027FEBE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -272,6 +403,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		185C49652CF6DD8600589C39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 185C49532CF6DD8400589C39 /* CoursesWidgetExtension */;
+			targetProxy = 185C49642CF6DD8600589C39 /* PBXContainerItemProxy */;
+		};
 		18B3682C2CE5FA130027FEBE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 18B368182CE5FA110027FEBE /* dauphin */;
@@ -285,6 +421,67 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		185C49682CF6DD8600589C39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = CoursesWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J7DG8X424B;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CoursesWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CoursesWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cantpr09ram.campuspass-ios.CoursesWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		185C49692CF6DD8600589C39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = CoursesWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J7DG8X424B;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CoursesWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CoursesWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cantpr09ram.campuspass-ios.CoursesWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		18B3683C2CE5FA130027FEBE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -412,6 +609,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need to unlock your data";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -451,6 +649,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need to unlock your data";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -570,6 +769,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		185C496A2CF6DD8600589C39 /* Build configuration list for PBXNativeTarget "CoursesWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				185C49682CF6DD8600589C39 /* Debug */,
+				185C49692CF6DD8600589C39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		18B368142CE5FA110027FEBE /* Build configuration list for PBXProject "dauphin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -607,6 +815,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1826CDA72CF4477F00471CA4 /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
+		};
+		188D2E7E2CF81E4F005E1B52 /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 18B368112CE5FA110027FEBE /* Project object */;
 }
