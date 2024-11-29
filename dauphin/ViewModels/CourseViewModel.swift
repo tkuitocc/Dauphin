@@ -9,96 +9,163 @@ import Combine
 
 // MARK: - ViewModel for Courses
 class CourseViewModel: ObservableObject {
+    private let appGroupDefaults = UserDefaults(suiteName: "group.cantpr09ram.dauphin")
+
     @Published var weekCourses: [[Course]]
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     
     private var helper: CustomAES256Helper?
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
         
     init() {
         self.weekCourses = Array(repeating: [Course](), count: 6)
         Task {
-            await initializeHelper()
+            initializeHelper()
         }
     }
     
-    // Initializer for mock data
     init(mockData: [[Course]]) {
         self.weekCourses = mockData
     }
     
-    private func initializeHelper() async {
-        do {
-            try await KeyConstants.loadAPIKeys()
-        
-            let key = KeyConstants.APIKeys.AES256KEY
-            let iv = KeyConstants.APIKeys.AES256IV
+    private func initializeHelper() {
+        if let key = KeychainManager.shared.get(forKey: "AES256KEY"),
+           let iv = KeychainManager.shared.get(forKey: "AES256IV") {
             helper = CustomAES256Helper(key: key, iv: iv)
-            print("Helper initialized with AES256 key and IV.")
-        } catch {
-            errorMessage = "Failed to load API keys: \(error.localizedDescription)"
-            print("Error: \(errorMessage ?? "Unknown error")")
+            print("✅ Successfully initialized helper with AES256 key and IV retrieved from Keychain.")
+        } else {
+            errorMessage = "Failed to retrieve AES256 key or IV from Keychain."
+            print("❌ Error: \(errorMessage ?? "Unknown error")")
         }
     }
+    
+    func loadCoursesFromCache() -> [[Course]]? {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
 
+        guard let appGroupDefaults = self.appGroupDefaults else {
+            print("❌ App Group Defaults is not available.")
+            return nil
+        }
+
+        if let data = appGroupDefaults.data(forKey: Constants.Courses) {
+            do {
+                let courses = try decoder.decode([[Course]].self, from: data)
+                print("✅ Loaded courses from cache successfully!")
+                return courses
+            } catch {
+                print("❌ Failed to decode cached courses: \(error)")
+            }
+        } else {
+            print("❌ No data found for key: \(Constants.Courses)")
+        }
+        return nil
+    }
+
+
+    func saveCoursesToCache(courses: [[Course]]) {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+
+        guard let appGroupDefaults = self.appGroupDefaults else {
+            print("App Group Defaults is not available.")
+            return
+        }
+
+        do {
+            let data = try encoder.encode(courses)
+            appGroupDefaults.set(data, forKey: Constants.Courses)
+            print("✅ Courses saved to cache successfully!")
+        } catch {
+            print("Failed to encode courses: \(error)")
+        }
+    }
+    
     func fetchCourses(with stdNo: String) {
         guard let helper = helper else {
-            self.errorMessage = "Encryption helper not initialized"
-            self.isLoading = false
-            return
-        }
-
-        guard let encrypted = helper.encrypt(data: "20220901200540356," + stdNo) else {
-            self.errorMessage = "Encryption failed"
-            self.isLoading = false
-            return
-        }
-
-        guard let q = encrypted.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            self.errorMessage = "Failed to encode query parameter"
-            self.isLoading = false
-            return
-        }
-
-        guard let url = URL(string: "https://ilifeapi.az.tku.edu.tw/api/ilifeStuClassApi?q=\(q)") else {
-            self.errorMessage = "Invalid URL"
-            self.isLoading = false
-            return
-        }
-
-        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
-        request.httpMethod = "GET"
-
-        isLoading = true
-
-        URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap { data, response -> [String: Any] in
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                guard let jsonDict = json as? [String: Any] else {
-                    throw URLError(.badServerResponse)
-                }
-                return jsonDict
+            DispatchQueue.main.async {
+                self.errorMessage = "Encryption helper not initialized"
+                self.isLoading = false
             }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                switch completion {
-                case .finished:
-                    print("Request completed successfully")
-                    self?.isLoading = false
-                case .failure(let error):
-                    print("Request failed with error: \(error.localizedDescription)")
-                    self?.isLoading = false
-                    self?.errorMessage = error.localizedDescription
+            return
+        }
+        
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            
+            guard let encrypted = helper.encrypt(data: "20220901200540356," + stdNo) else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Encryption failed"
+                    self.isLoading = false
                 }
-            } receiveValue: { [weak self] apiData in
-                self?.weekCourses = self?.parseCourseData(apiData: apiData) ?? []
-                self?.isLoading = false
-                print("b \(String(describing: self?.isLoading))")
+                return
             }
-            .store(in: &cancellables)
 
+            guard let q = encrypted.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Failed to encode query parameter"
+                    self.isLoading = false
+                }
+                return
+            }
+
+            guard let url = URL(string: "https://ilifeapi.az.tku.edu.tw/api/ilifeStuClassApi?q=\(q)") else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Invalid URL"
+                    self.isLoading = false
+                }
+                return
+            }
+
+            var request = URLRequest(url: url, timeoutInterval: Double.infinity)
+            request.httpMethod = "GET"
+
+            DispatchQueue.main.async {
+                self.isLoading = true
+            }
+            
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.errorMessage = "Request failed with error: \(error.localizedDescription)"
+                    }
+                    return
+                }
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.errorMessage = "No data received"
+                    }
+                    return
+                }
+
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    guard let jsonDict = json as? [String: Any] else {
+                        throw URLError(.badServerResponse)
+                    }
+
+                    let courses = self.parseCourseData(apiData: jsonDict)
+                    self.saveCoursesToCache(courses: courses)
+
+                    DispatchQueue.main.async {
+                        self.weekCourses = courses
+                        self.isLoading = false
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.errorMessage = "Failed to parse JSON: \(error.localizedDescription)"
+                    }
+                }
+            }
+            task.resume()
+        }
     }
+
 
     private func parseCourseData(apiData: [String: Any]) -> [[Course]] {
         var weekCourses = Array(repeating: [Course](), count: 6)

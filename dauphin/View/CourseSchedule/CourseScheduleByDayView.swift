@@ -24,9 +24,9 @@ struct CourseScheduleByDayView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 5) {
             // Weekday Selector
-            HStack(spacing: 20) {
+            HStack(spacing: 10) {
                 ForEach(0..<6, id: \.self) { index in
                     let day = ["Mo", "Tu", "We", "Th", "Fr", "Sa"][index]
                 

@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Course Model
-struct Course: Identifiable, Hashable {
+struct Course: Identifiable, Hashable, Codable {
     var id = UUID()
     var name: String
     var room: String
@@ -19,13 +19,43 @@ struct Course: Identifiable, Hashable {
     var stdNo: String
 }
 
+func getNextUpCourse(from schedule: [[Course]]) -> Course? {
+    let currentTime = Date()
+    let calendar = Calendar.current
+        
+    let timeAfter20Minutes = calendar.date(byAdding: .minute, value: 20, to: currentTime)!
+        
+    let weekday = calendar.component(.weekday, from: currentTime)
+    let todayIndex = weekday - 2
+
+    for dayOffset in 0..<6 {
+        let dayIndex = (todayIndex + dayOffset) % 6
+        let isToday = (dayOffset == 0)
+            
+        let courses = schedule[dayIndex].filter { isToday ? $0.startTime > timeAfter20Minutes : true }
+            
+        if let nextCourse = courses.min(by: { $0.startTime < $1.startTime }) {
+            return nextCourse
+        }
+    }
+    return nil
+}
+
 func stringToTime(_ timeString: String) -> Date? {
     let formatter = DateFormatter()
     formatter.dateFormat = "HH:mm"
     formatter.timeZone = TimeZone.current
     
-    // 假設日期是 2024 年 1 月 1 日
     return formatter.date(from: timeString)
+}
+
+func formatTime(_ date: Date?) -> String {
+    guard let date = date else {
+        return "ERROR"
+    }
+    let formatter = DateFormatter()
+    formatter.dateFormat = "HH:mm"
+    return formatter.string(from: date)
 }
 
 let mockData: [[Course]] = [

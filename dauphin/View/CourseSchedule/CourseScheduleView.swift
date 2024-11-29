@@ -49,7 +49,7 @@ struct CourseScheduleView: View {
                 }
                 
             } else {
-                LibSSOLoginView(viewModel: authViewModel)
+                AnyView(LibSSOLoginView(viewModel: authViewModel))
             }
         }
     }
