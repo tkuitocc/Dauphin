@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1826CDA82CF4477F00471CA4 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1826CDA72CF4477F00471CA4 /* KeychainSwift */; };
+		184BADB32CFAB273001811DB /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 184BADB22CFAB273001811DB /* Reachability */; };
+		184BADB52CFAB403001811DB /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 184BADB42CFAB403001811DB /* Reachability */; };
 		185C49572CF6DD8400589C39 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185C49562CF6DD8400589C39 /* WidgetKit.framework */; };
 		185C49592CF6DD8400589C39 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185C49582CF6DD8400589C39 /* SwiftUI.framework */; };
 		185C49662CF6DD8600589C39 /* CoursesWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -126,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				188D2E7F2CF81E4F005E1B52 /* KeychainSwift in Frameworks */,
+				184BADB52CFAB403001811DB /* Reachability in Frameworks */,
 				185C49592CF6DD8400589C39 /* SwiftUI.framework in Frameworks */,
 				185C49572CF6DD8400589C39 /* WidgetKit.framework in Frameworks */,
 			);
@@ -136,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1826CDA82CF4477F00471CA4 /* KeychainSwift in Frameworks */,
+				184BADB32CFAB273001811DB /* Reachability in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +214,7 @@
 			name = CoursesWidgetExtension;
 			packageProductDependencies = (
 				188D2E7E2CF81E4F005E1B52 /* KeychainSwift */,
+				184BADB42CFAB403001811DB /* Reachability */,
 			);
 			productName = CoursesWidgetExtension;
 			productReference = 185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */;
@@ -235,6 +240,7 @@
 			name = dauphin;
 			packageProductDependencies = (
 				1826CDA72CF4477F00471CA4 /* KeychainSwift */,
+				184BADB22CFAB273001811DB /* Reachability */,
 			);
 			productName = campuspass_ios;
 			productReference = 18B368192CE5FA110027FEBE /* dauphin.app */;
@@ -326,6 +332,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */,
+				18DF0BEB2CFAB056008E2674 /* XCRemoteSwiftPackageReference "Reachability" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 18B3681A2CE5FA110027FEBE /* Products */;
@@ -825,6 +832,14 @@
 				minimumVersion = 24.0.0;
 			};
 		};
+		18DF0BEB2CFAB056008E2674 /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -832,6 +847,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */;
 			productName = KeychainSwift;
+		};
+		184BADB22CFAB273001811DB /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 18DF0BEB2CFAB056008E2674 /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+		184BADB42CFAB403001811DB /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 18DF0BEB2CFAB056008E2674 /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
 		};
 		188D2E7E2CF81E4F005E1B52 /* KeychainSwift */ = {
 			isa = XCSwiftPackageProductDependency;

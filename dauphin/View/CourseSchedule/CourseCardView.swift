@@ -20,34 +20,37 @@ struct CourseCardView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(courseName)
-                        .font(.headline)
-                        .foregroundColor(colorScheme == .dark ? .orange : .blue)
-                    Text("\(roomNumber)\n\(teacherName)")
+                        .font(.title3)
+                        .foregroundColor(.white)
+                        .padding(.bottom, 20)
+                    
+                    Text("\(roomNumber)")
                         .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.white)
                 }
                 Spacer()
                 VStack(alignment: .trailing) {
                     Text("\(formatTime(StartTime)) ~ \(formatTime(EndTime))")
-                        .font(.footnote)
-                        .foregroundColor(colorScheme == .dark ? .orange : .green)
-                        .padding(.bottom, 20)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding(.bottom, 10)
                     
-                    Text("\(stdNo)")
+                    Text("\(teacherName)")
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                    
+                    Text("成績座號：\(stdNo)")
                         .font(.footnote)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.white)
+                        .padding(5)
+                        .background(Color.cyan)
+                        .cornerRadius(5)
                 }
             }
             .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(colorScheme == .dark ? Color.black.opacity(0.5) : Color.white)
-                .cornerRadius(10)
-                .overlay(
-                    Rectangle()
-                        .frame(height: 1)
-                        .foregroundColor(colorScheme == .dark ? Color.gray.opacity(0.5) : Color.gray.opacity(0.3)),
-                    alignment: .bottom
-                )
+                .background(Color.blue)
+                .cornerRadius(15)
         }
 }
 
