@@ -22,13 +22,11 @@ struct CourseScheduleView: View {
                         .refreshable {
                             if !authViewModel.ssoStuNo.isEmpty {
                                 viewModel.fetchCourses(with: authViewModel.ssoStuNo)
-                                print("Refreshing courses, isLoading:", viewModel.isLoading)
                             }
                         }
                         .onAppear {
                             if !authViewModel.ssoStuNo.isEmpty {
                                 viewModel.fetchCourses(with: authViewModel.ssoStuNo)
-                                print("courses isLoading:", viewModel.isLoading)
                             }
                         }
                 } else {
@@ -37,13 +35,11 @@ struct CourseScheduleView: View {
                         .refreshable {
                             if !authViewModel.ssoStuNo.isEmpty {
                                 viewModel.fetchCourses(with: authViewModel.ssoStuNo)
-                                print("Refreshing courses, isLoading:", viewModel.isLoading)
                             }
                         }
                         .onAppear {
                             if !authViewModel.ssoStuNo.isEmpty {
                                 viewModel.fetchCourses(with: authViewModel.ssoStuNo)
-                                print("courses isLoading:", viewModel.isLoading)
                             }
                         }
                 }

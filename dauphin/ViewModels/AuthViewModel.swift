@@ -22,10 +22,12 @@ class AuthViewModel: ObservableObject {
             appGroupDefaults?.set(ssoStuNo, forKey: Constants.ssoTokenKey)
         }
     }
+    private var courseViewModel: CourseViewModel
     
-    init() {
+    init(courseViewModel: CourseViewModel = CourseViewModel()) {
         self.isLoggedIn = appGroupDefaults?.bool(forKey: Constants.isLoggedInKey) ?? false
         self.ssoStuNo = appGroupDefaults?.string(forKey: Constants.ssoTokenKey) ?? ""
+        self.courseViewModel = courseViewModel
     }
     
     func login(with token: String) {
@@ -37,6 +39,7 @@ class AuthViewModel: ObservableObject {
             //update user defaults for widget
             WidgetCenter.shared.reloadAllTimelines()
             // Directly check the App Group storage
+            self.fetchCoursesForUser(token: token)
             if let savedValue = self.appGroupDefaults?.string(forKey: Constants.ssoTokenKey) {
                 print("儲存的 ssoStuNo: \(savedValue) \(Constants.ssoTokenKey)")
             } else {
@@ -45,7 +48,6 @@ class AuthViewModel: ObservableObject {
         }
     }
 
-    
     func logout() {
         appGroupDefaults?.removeObject(forKey: Constants.ssoTokenKey)
         appGroupDefaults?.removeObject(forKey: Constants.Courses)
@@ -63,6 +65,10 @@ class AuthViewModel: ObservableObject {
             self.ssoStuNo = ""
             print("已登出")
         }
+    }
+    
+    func fetchCoursesForUser(token: String) {
+        courseViewModel.fetchCourses(with: token)
     }
 }
 

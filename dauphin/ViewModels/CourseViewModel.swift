@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import Combine
+import Reachability
 
 // MARK: - ViewModel for Courses
 class CourseViewModel: ObservableObject {
@@ -15,11 +16,38 @@ class CourseViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     
+    private var reachability: Reachability!
     private var helper: CustomAES256Helper?
     var cancellables = Set<AnyCancellable>()
         
     init() {
         self.weekCourses = Array(repeating: [Course](), count: 6)
+        
+        reachability = try! Reachability()
+
+        reachability.whenReachable = { reachability in
+            DispatchQueue.main.async {
+                if reachability.connection == .wifi {
+                    print("Network is reachable via WiFi.")
+                } else {
+                    print("Network is reachable via Cellular.")
+                }
+                self.errorMessage = nil
+            }
+        }
+
+        reachability.whenUnreachable = { _ in
+            DispatchQueue.main.async {
+                self.errorMessage = "No internet connection. Please check your network."
+            }
+        }
+
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+            
         Task {
             initializeHelper()
         }
@@ -87,6 +115,17 @@ class CourseViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.errorMessage = "Encryption helper not initialized"
                 self.isLoading = false
+            }
+            return
+        }
+        
+        guard reachability.connection != .unavailable else {
+            if let cachedCourses = loadCoursesFromCache() {
+                DispatchQueue.main.async {
+                    self.errorMessage = "No internet connection. Showing cached data."
+                    self.isLoading = false
+                    self.weekCourses = cachedCourses
+                }
             }
             return
         }

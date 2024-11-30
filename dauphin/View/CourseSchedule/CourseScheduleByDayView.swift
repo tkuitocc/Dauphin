@@ -39,7 +39,7 @@ struct CourseScheduleByDayView: View {
                             .foregroundColor(selectedDayIndex == index ? .white : .primary)
                     }
                     .frame(width: 50, height: 70)
-                    .background(selectedDayIndex == index ? colorScheme == .dark ? .orange : .blue : Color.clear)
+                    .background(selectedDayIndex == index ? .blue : Color.clear)
                     .cornerRadius(10)
                     .onTapGesture {
                         selectedDayIndex = index
