@@ -45,8 +45,9 @@ struct CoursesNextUpSmallView: View {
                 
                 HStack(alignment: .top) {
                     Rectangle()
-                        .fill(Color.blue)
+                        .fill(Color.green)
                         .frame(width: 4)
+                        .clipShape(RoundedRectangle(cornerRadius: 2, style: .continuous))
                     
                     Spacer()
                     

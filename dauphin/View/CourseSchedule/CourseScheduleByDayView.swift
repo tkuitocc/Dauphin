@@ -33,20 +33,19 @@ struct CourseScheduleByDayView: View {
                     VStack {
                         Image(systemName: "calendar")
                             .resizable()
+                            .foregroundColor(selectedDayIndex == index ? .blue : .primary)
                             .frame(width: 30, height: 30)
                         Text(day)
                             .font(.headline)
-                            .foregroundColor(selectedDayIndex == index ? .white : .primary)
+                            .foregroundColor(selectedDayIndex == index ? .blue : .primary)
                     }
                     .frame(width: 50, height: 70)
-                    .background(selectedDayIndex == index ? .blue : Color.clear)
-                    .cornerRadius(10)
                     .onTapGesture {
                         selectedDayIndex = index
                     }
                 }
             }
-            .padding(.top, 20)
+            .padding(.top, 0)
             
             // Course Cards
             ScrollView {
