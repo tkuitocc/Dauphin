@@ -35,6 +35,7 @@ struct CoursesNextUpViewLockScreenView: View {
                 Rectangle()
                     .fill(Color.red)
                     .frame(width: 4)
+                    .clipShape(RoundedRectangle(cornerRadius: 2, style: .continuous))
                 
                 Spacer()
                 

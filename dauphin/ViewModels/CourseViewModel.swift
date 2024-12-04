@@ -18,6 +18,8 @@ class CourseViewModel: ObservableObject {
     
     private var reachability: Reachability!
     private var helper: CustomAES256Helper?
+    private var timeoutWorkItem: DispatchWorkItem?
+    
     var cancellables = Set<AnyCancellable>()
         
     init() {
@@ -111,6 +113,17 @@ class CourseViewModel: ObservableObject {
     }
     
     func fetchCourses(with stdNo: String) {
+        timeoutWorkItem?.cancel()
+        
+        if let cachedCourses = loadCoursesFromCache() {
+            let workItem = DispatchWorkItem { [weak self] in
+                self?.errorMessage = "Fetching data took too long. Using cached data."
+                self?.weekCourses = cachedCourses
+            }
+            timeoutWorkItem = workItem
+            DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: workItem)
+        }
+        
         guard let helper = helper else {
             DispatchQueue.main.async {
                 self.errorMessage = "Encryption helper not initialized"
