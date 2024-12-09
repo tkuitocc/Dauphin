@@ -18,7 +18,7 @@ struct Provider: TimelineProvider {
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> Void) {
         let entry: SimpleEntry
         if let stdNo = getSsoStuNo(), !stdNo.isEmpty {
-            entry = SimpleEntry(date: Date(), ssoStuNo: stdNo, course: mockData[0][1])
+            entry = SimpleEntry(date: Date(), ssoStuNo: stdNo, course: mockData[0])
         } else {
             entry = SimpleEntry(date: Date(), ssoStuNo: "尚未登入", course: nil)
         }
@@ -98,11 +98,11 @@ struct CoursesNextUpWidget: Widget {
 #Preview(as: .accessoryRectangular) {
     CoursesNextUpWidget()
 } timeline: {
-    SimpleEntry(date: Date(), ssoStuNo: "111111111", course: mockData[0][1])
+    SimpleEntry(date: Date(), ssoStuNo: "111111111", course: mockData[0])
 }
 
 #Preview(as: .systemSmall) {
     CoursesNextUpWidget()
 } timeline: {
-    SimpleEntry(date: Date(), ssoStuNo: "111111111", course: mockData[0][1])
+    SimpleEntry(date: Date(), ssoStuNo: "111111111", course: mockData[0])
 }

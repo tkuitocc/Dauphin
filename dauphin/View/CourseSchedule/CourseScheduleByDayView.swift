@@ -21,41 +21,17 @@ struct CourseScheduleByDayView: View {
             default: return 0
             }
         }()
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorSchem
     
     var body: some View {
-        VStack(spacing: 5) {
-            // Weekday Selector
-            HStack(spacing: 10) {
-                ForEach(0..<6, id: \.self) { index in
-                    let day = ["Mo", "Tu", "We", "Th", "Fr", "Sa"][index]
-                
-                    VStack {
-                        Image(systemName: "calendar")
-                            .resizable()
-                            .foregroundColor(selectedDayIndex == index ? .blue : .primary)
-                            .frame(width: 30, height: 30)
-                        Text(day)
-                            .font(.headline)
-                            .foregroundColor(selectedDayIndex == index ? .blue : .primary)
-                    }
-                    .frame(width: 50, height: 70)
-                    .onTapGesture {
-                        selectedDayIndex = index
-                    }
-                }
+        VStack {
+            if courseViewModel.weekCourses.isEmpty {
+                Text("Loading courses...")
+            } else if !courseViewModel.weekCourses.isEmpty {
+                Text("\(courseViewModel.weekCourses[0])")
+            } else {
+                Text("No courses available.")
             }
-            .padding(.top, 0)
-            
-            // Course Cards
-            ScrollView {
-                VStack(spacing: 16) {
-                    ForEach(courseViewModel.weekCourses[selectedDayIndex], id: \.self) { course in
-                        CourseCardView(courseName: course.name, roomNumber: course.room, teacherName: course.teacher, StartTime: course.startTime, EndTime: course.endTime, stdNo: course.stdNo)
-                    }
-                }
-            }
-            .scrollIndicators(.hidden)
         }
     }
 }

@@ -30,11 +30,7 @@ struct CourseScheduleByWeekView: View {
                 .frame(height: 20)
                 HStack(spacing: 1) {
                     ForEach(0..<6, id: \.self) { index in
-                        SingleTimeline(courses: Binding(get: {
-                            courseViewModel.weekCourses[index]
-                        }, set: { newValue in
-                            courseViewModel.weekCourses[index] = newValue
-                        }))
+                        Text("\(courseViewModel.weekCourses[0])")
                         .frame(width: geometry.size.width / 6 - 10)
                     }
                 }
