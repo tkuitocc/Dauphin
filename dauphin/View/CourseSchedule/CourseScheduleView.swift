@@ -17,8 +17,7 @@ struct CourseScheduleView: View {
         Group {
             if authViewModel.isLoggedIn {
                 if horizontalSizeClass == .compact {
-                    CourseScheduleByDayView(courseViewModel: viewModel)
-                        .padding(20)
+                    CourseScheduleByDayView(courseViewModel: viewModel, authViewModel: authViewModel)
                         .refreshable {
                             if !authViewModel.ssoStuNo.isEmpty {
                                 Task {

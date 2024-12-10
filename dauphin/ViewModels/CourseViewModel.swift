@@ -158,9 +158,11 @@ class CourseViewModel: ObservableObject {
                 continue
             }
 
+            //let name = (courseData["ch_cos_name"] as? String ?? "Unknown")
+            //    .replacingOccurrences(of: "\\s*\\(.*\\)", with: "", options: .regularExpression)
             let name = (courseData["ch_cos_name"] as? String ?? "Unknown")
-                .replacingOccurrences(of: "\\s*\\(.*\\)", with: "", options: .regularExpression)
-            let room = courseData["room"] as? String ?? "Unknown Room"
+                
+            let room = courseData["room"] as? String ?? (courseData["note"] as? String ?? "Unknown Room")
             let teacher = courseData["teach_name"] as? String ?? "Unknown Teacher"
             let seatNo = courseData["seat_no"] as? String ?? "Unknown Seat"
 

@@ -17,41 +17,67 @@ struct CourseCardView: View {
     @Environment(\.colorScheme) var colorScheme
 
         var body: some View {
-            HStack {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(courseName)
-                        .font(.title3)
-                        .foregroundColor(.white)
-                        .padding(.bottom, 20)
+            VStack(alignment: .leading, spacing: 12) {
+                Text("\(formatTime(StartTime)) ~ \(formatTime(EndTime))")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                        
+                Text("\(courseName)")
+                    .font(.headline)
+                    .foregroundColor(.primary)
                     
-                    Text("\(roomNumber)")
-                        .font(.subheadline)
-                        .foregroundColor(.white)
+                        
+                HStack {
+                    VStack {
+                        HStack(spacing: 8) {
+                            Image(systemName: "location.circle")
+                            Text("\(roomNumber)")
+                                .font(.caption)
+                                .bold()
+                                .foregroundColor(.primary)
+                            
+                        }
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 10)
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                    }
+                    
+                    VStack {
+                        HStack(spacing: 8) {
+                            Image(systemName: "graduationcap")
+                            Text("\(stdNo)")
+                                .font(.caption)
+                                .bold()
+                                .foregroundColor(.primary)
+                            
+                        }
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 10)
+                        .background(Color.blue.opacity(0.8))
+                        .cornerRadius(8)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .center, spacing: 5) {
+                        HStack {
+                            Image(systemName: "inset.filled.rectangle.and.person.filled")
+                            VStack {
+                                Text("\(teacherName)")
+                                    .font(.caption)
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                    }
                 }
-                Spacer()
-                VStack(alignment: .trailing) {
-                    Text("\(formatTime(StartTime)) ~ \(formatTime(EndTime))")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding(.bottom, 10)
-                    
-                    Text("\(teacherName)")
-                        .font(.subheadline)
-                        .foregroundColor(.white)
-                    
-                    Text("成績座號：\(stdNo)")
-                        .font(.footnote)
-                        .foregroundColor(.white)
-                        .padding(5)
-                        .background(Color.cyan)
-                        .cornerRadius(5)
-                }
-            }
-            .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.blue)
-                .cornerRadius(15)
         }
+        .padding()
+        .background(colorScheme == .dark ? Color(UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 1)) : Color.white)
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 4)
+        .padding(.horizontal)
+    }
 }
 
 #Preview {
