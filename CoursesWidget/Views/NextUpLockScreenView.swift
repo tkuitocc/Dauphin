@@ -23,7 +23,7 @@ struct CoursesNextUpViewLockScreenView: View {
         }else{
             
         }
-        if(entry.course == nil){
+        if(entry.courses.isEmpty){
             Text("下週見")
                 .font(.caption2)
                 .padding()
@@ -39,16 +39,28 @@ struct CoursesNextUpViewLockScreenView: View {
                 
                 Spacer()
                 
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("\(entry.course?.name ?? "")")
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("\(entry.courses[0].name)")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(colorScheme == .dark ? .white : .gray)
-                    Text("\(entry.course?.room ?? "")")
+                    
+                    Text("\(formatTime(entry.courses[0].startTime)) - \(formatTime(entry.courses[0].endTime))")
                         .font(.system(size: 12))
                         .foregroundColor(colorScheme == .dark ? .white : .gray)
-                    Text("\(formatTime(entry.course?.startTime)) ~ \(formatTime(entry.course?.endTime))")
-                        .font(.system(size: 12))
-                        .foregroundColor(colorScheme == .dark ? .white : .gray)
+                    
+                    HStack {
+                        Image(systemName: "location.circle")
+                        Text(": \(entry.courses[0].room)")
+                            .font(.system(size: 12))
+                            .foregroundColor(colorScheme == .dark ? .white : .gray)
+                        
+                        Spacer(minLength: 20)
+                        
+                        Image(systemName: "graduationcap")
+                        Text(": \(entry.courses[0].stdNo)")
+                            .font(.system(size: 12))
+                            .foregroundColor(colorScheme == .dark ? .white : .gray)
+                    }
                 }
             }
             .padding(.vertical, 16)
