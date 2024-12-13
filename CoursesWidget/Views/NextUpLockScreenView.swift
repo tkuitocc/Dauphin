@@ -11,7 +11,6 @@ struct CoursesNextUpViewLockScreenView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var entry: Provider.Entry
-
     var body: some View {
         if(entry.ssoStuNo.isEmpty) {
             Text(entry.ssoStuNo.isEmpty ? "尚未登入" : entry.ssoStuNo)
@@ -42,24 +41,24 @@ struct CoursesNextUpViewLockScreenView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("\(entry.courses[0].name)")
                         .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(colorScheme == .dark ? .white : .gray)
                     
                     Text("\(formatTime(entry.courses[0].startTime)) - \(formatTime(entry.courses[0].endTime))")
                         .font(.system(size: 12))
-                        .foregroundColor(colorScheme == .dark ? .white : .gray)
                     
                     HStack {
                         Image(systemName: "location.circle")
+                            .resizable()
+                            .frame(width: 15, height: 15)
                         Text(": \(entry.courses[0].room)")
                             .font(.system(size: 12))
-                            .foregroundColor(colorScheme == .dark ? .white : .gray)
                         
                         Spacer(minLength: 20)
                         
                         Image(systemName: "graduationcap")
+                            .resizable()
+                            .frame(width: 15, height: 15)
                         Text(": \(entry.courses[0].stdNo)")
                             .font(.system(size: 12))
-                            .foregroundColor(colorScheme == .dark ? .white : .gray)
                     }
                 }
             }
@@ -81,4 +80,10 @@ struct CoursesNextUpViewLockScreenView: View {
         formatter.dateFormat = "EEEE"
         return formatter.string(from: Date())
     }
+}
+
+#Preview(as: .accessoryRectangular) {
+    CoursesNextUpWidget()
+} timeline: {
+    SimpleEntry(date: Date(), ssoStuNo: "111111111", courses: mockData, today: mockData.count)
 }

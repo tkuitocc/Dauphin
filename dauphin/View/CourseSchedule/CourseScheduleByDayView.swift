@@ -113,12 +113,16 @@ struct CourseScheduleByDayView: View {
                                 stdNo: course.stdNo
                             )
                             .padding(2)
+                            .onTapGesture {
+                                //showSheet.toggle()
+                                //selectedCourse = course
+                            }
                         }
                     }
-                    //Text("\(courseViewModel.weekCourses.filter{$0.weekday == selectedIndex})")
                 }
             }
             .scrollIndicators(.hidden)
+            .presentationBackground(.thinMaterial)
         }
     }
 }

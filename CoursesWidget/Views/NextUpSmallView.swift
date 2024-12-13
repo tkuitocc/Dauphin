@@ -11,7 +11,10 @@ import WidgetKit
 struct CoursesNextUpSmallView: View {
     @Environment(\.colorScheme) var colorScheme
     var entry: Provider.Entry
-    
+    let currentWeekday = Calendar.current.component(.weekday, from: Date())
+    var todayNotDoneCount: Int {
+        entry.courses.filter { $0.weekday == currentWeekday }.count
+    }
     var body: some View {
         if(entry.ssoStuNo.isEmpty) {
             Text(entry.ssoStuNo.isEmpty ? "尚未登入" : entry.ssoStuNo)
@@ -21,65 +24,79 @@ struct CoursesNextUpSmallView: View {
                     Color(UIColor.systemBackground)
                 }
         }else{
-            
-        }
-        if(entry.course == nil){
-            Text("下週見")
-                .font(.caption2)
-                .padding()
+            if(entry.courses.isEmpty){
+                Text("下週見")
+                    .font(.caption2)
+                    .padding()
+                    .containerBackground(for: .widget) {
+                        Color(UIColor.systemBackground)
+                    }
+            }else{
+                VStack(alignment: .leading, spacing: 5) {
+                    // First Event
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text("\(entry.courses[1].name)")
+                                .font(.headline)
+                        }
+                        Text("\(formatTime(entry.courses[0].startTime)) - \(formatTime(entry.courses[0].endTime))")
+                            .font(.system(size: 12))
+                        
+                        HStack {
+                            Image(systemName: "location.circle")
+                                .resizable()
+                                .frame(width: 15, height: 15)
+                            Text(": \(entry.courses[0].room)")
+                                .font(.system(size: 12))
+                        }
+                        HStack {
+                            Image(systemName: "graduationcap")
+                                .resizable()
+                                .frame(width: 15, height: 15)
+                            Text(": \(entry.courses[0].stdNo)")
+                                .font(.system(size: 12))
+                        }
+                    }
+                    .padding(.leading, 4)
+                    .overlay(
+                        Capsule()
+                            .fill(Color.blue)
+                            .frame(width: 4)
+                            .padding(.leading, -8),
+                        alignment: .leading
+                    )
+                        // Second Event
+                    if(entry.courses.count > 1){
+                        VStack(alignment: .leading, spacing: 0) {
+                            VStack {
+                                Text("\(entry.courses[1].name)")
+                                    .font(.subheadline)
+                                Spacer()
+                            }
+                            Text("\(formatTime(entry.courses[1].startTime))")
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                        }
+                        .padding(.leading, 4)
+                        .overlay(
+                            Capsule()
+                                .fill(Color.blue.opacity(0.6))
+                                .frame(width: 4)
+                                .padding(.leading, -8),
+                            alignment: .leading
+                        )
+                    }
+                }
                 .containerBackground(for: .widget) {
                     Color(UIColor.systemBackground)
                 }
-        }else{
-            VStack(alignment: .trailing, spacing: 5) {
-                VStack {
-                    Text(currentDay())
-                        .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(.blue)
-                    Text(currentDate())
-                        .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(colorScheme == .dark ? .white : .gray)
-                }
-                
-                Spacer()
-                
-                HStack(alignment: .top) {
-                    Rectangle()
-                        .fill(Color.green)
-                        .frame(width: 4)
-                        .clipShape(RoundedRectangle(cornerRadius: 2, style: .continuous))
-                    
-                    Spacer()
-                    
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("\(entry.course?.name ?? "")")
-                            .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(colorScheme == .dark ? .white : .gray)
-                        Text("\(entry.course?.room ?? "")")
-                            .font(.system(size: 12))
-                            .foregroundColor(colorScheme == .dark ? .white : .gray)
-                        Text("\(formatTime(entry.course?.startTime)) ~ \(formatTime(entry.course?.endTime))")
-                            .font(.system(size: 12))
-                            .foregroundColor(colorScheme == .dark ? .white : .gray)
-                    }
-                }
-            }
-            .padding(.vertical, 16)
-            .containerBackground(for: .widget) {
-                Color(UIColor.systemBackground)
             }
         }
     }
-    
-    func currentDate() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM.dd"
-        return formatter.string(from: Date())
-    }
-        
-    func currentDay() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE"
-        return formatter.string(from: Date())
-    }
+}
+
+#Preview(as: .systemSmall) {
+    CoursesNextUpWidget()
+} timeline: {
+    SimpleEntry(date: Date(), ssoStuNo: "111111111", courses: mockData, today: mockData.count)
 }
