@@ -12,15 +12,15 @@ struct Provider: TimelineProvider {
     let viewModel = CourseViewModel()
     
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), ssoStuNo: "尚未登入", course: nil)
+        SimpleEntry(date: Date(), ssoStuNo: "尚未登入", courses: [], today: 0)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> Void) {
         let entry: SimpleEntry
         if let stdNo = getSsoStuNo(), !stdNo.isEmpty {
-            entry = SimpleEntry(date: Date(), ssoStuNo: stdNo, course: mockData[0])
+            entry = SimpleEntry(date: Date(), ssoStuNo: stdNo, courses: mockData, today: mockData.count)
         } else {
-            entry = SimpleEntry(date: Date(), ssoStuNo: "尚未登入", course: nil)
+            entry = SimpleEntry(date: Date(), ssoStuNo: "尚未登入", courses: [], today: 0)
         }
         completion(entry)
     }
@@ -29,14 +29,17 @@ struct Provider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
         let currentDate = Date()
         if let stdNo = getSsoStuNo(), !stdNo.isEmpty {
-            if let cachedCourses = viewModel.loadCoursesFromCache(){
-                let courses  = cachedCourses
-                let entry = SimpleEntry(date: currentDate, ssoStuNo: stdNo, course: getNextUpCourse(from: courses))
+            if let cachedCourses = viewModel.loadCoursesFromCache() {
+                let courses = cachedCourses
+                let currentWeekday = Calendar.current.component(.weekday, from: Date())
+                    let filteredCourses = courses.filter { $0.weekday == currentWeekday }
+                let entry = SimpleEntry(date: currentDate, ssoStuNo: stdNo, courses: getNextUpCourses(from: courses), today: filteredCourses.count)
                 let timeline = Timeline(entries: [entry], policy: .atEnd)
                 completion(timeline)
             }
+
         } else {
-            let entry = SimpleEntry(date: currentDate, ssoStuNo: "尚未登入", course: nil)
+            let entry = SimpleEntry(date: currentDate, ssoStuNo: "尚未登入", courses: [], today: 0)
             let timeline = Timeline(entries: [entry], policy: .atEnd)
             completion(timeline)
         }
@@ -77,7 +80,8 @@ struct CoursesNextUpWidgetEntryView: View {
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let ssoStuNo: String
-    let course: Course?
+    let courses: [Course]
+    let today: Int
 }
 
 struct CoursesNextUpWidget: Widget {
@@ -92,17 +96,4 @@ struct CoursesNextUpWidget: Widget {
         .description("顯示下一堂課")
         .supportedFamilies([.systemSmall, .accessoryRectangular])
     }
-}
-
-
-#Preview(as: .accessoryRectangular) {
-    CoursesNextUpWidget()
-} timeline: {
-    SimpleEntry(date: Date(), ssoStuNo: "111111111", course: mockData[0])
-}
-
-#Preview(as: .systemSmall) {
-    CoursesNextUpWidget()
-} timeline: {
-    SimpleEntry(date: Date(), ssoStuNo: "111111111", course: mockData[0])
 }

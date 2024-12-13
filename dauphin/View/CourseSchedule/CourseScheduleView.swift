@@ -31,7 +31,6 @@ struct CourseScheduleView: View {
                                     await viewModel.fetchCourses(with: authViewModel.ssoStuNo)
                                 }
                             }
-                            print(viewModel.weekCourses)
                         }
                 } else {
                     CourseScheduleByWeekView(courseViewModel: viewModel)
