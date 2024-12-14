@@ -22,11 +22,11 @@ struct ContentView: View {
                 //    LibraryView(authViewModel: viewModel)
                 //}
                 
-                Tab("other", systemImage: "chart.line.text.clipboard"){
+                Tab("Other", systemImage: "chart.line.text.clipboard"){
                     OtherView()
                 }
                 
-                Tab("setting", systemImage: "gear") {
+                Tab("Setting", systemImage: "gear") {
                     SettingView(viewModel: viewModel)
                 }
                 
