@@ -36,8 +36,9 @@ struct CoursesNextUpSmallView: View {
                     // First Event
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
-                            Text("\(entry.courses[1].name)")
+                            Text("\(entry.courses[0].name)")
                                 .font(.headline)
+                            Spacer()
                         }
                         Text("\(formatTime(entry.courses[0].startTime)) - \(formatTime(entry.courses[0].endTime))")
                             .font(.system(size: 12))
