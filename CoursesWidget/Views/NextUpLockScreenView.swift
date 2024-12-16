@@ -46,19 +46,23 @@ struct CoursesNextUpViewLockScreenView: View {
                         .font(.system(size: 12))
                     
                     HStack {
-                        Image(systemName: "location.circle")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                        Text(": \(entry.courses[0].room)")
-                            .font(.system(size: 12))
+                        HStack(spacing: 0) {
+                            Image(systemName: "location.circle")
+                                .resizable()
+                                .frame(width: 15, height: 15)
+                            Text(" : \(entry.courses[0].room)")
+                                .font(.system(size: 12))
+                        }
                         
                         Spacer(minLength: 20)
                         
-                        Image(systemName: "graduationcap")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                        Text(": \(entry.courses[0].stdNo)")
-                            .font(.system(size: 12))
+                        HStack(spacing: 0) {
+                            Image(systemName: "graduationcap")
+                                .resizable()
+                                .frame(width: 15, height: 15)
+                            Text(" : \(entry.courses[0].stdNo)")
+                                .font(.system(size: 12))
+                        }
                     }
                 }
             }
