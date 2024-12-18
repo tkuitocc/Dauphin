@@ -1,6 +1,6 @@
 //
 //  CourseScheduleByWeekView.swift
-//  campuspass_ios
+//  dauphin
 //
 //  Created by \u8b19 on 11/19/24.
 //
@@ -18,22 +18,6 @@ struct CourseScheduleByWeekView: View {
     var body: some View {
         GeometryReader { geometry in
             HStack(alignment: .top, spacing: 0) { // Reduced spacing between time and timeline
-                // Time Labels
-                ZStack {
-                    VStack(spacing: 0) {
-                        ForEach(8...22, id: \.self) { hour in
-                            Text("\(hour):00")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                                .frame(height: (geometry.size.height / 14) * 0.96) // Align with 14 slots
-                                .frame(maxWidth: .infinity, alignment: .trailing) // Align closer to the timeline
-                                .padding(.trailing, 0) // Minimal padding for spacing
-                        }
-                    }
-                    .frame(width: 45) // Reduced width for tighter layout
-                    .background(Color(UIColor.systemBackground))
-                }
-
                 // Timeline
                 VStack {
                     if isSaturday > 0 {
@@ -51,13 +35,28 @@ struct CourseScheduleByWeekView: View {
                             .padding(.horizontal)
                             .frame(height: 20)
 
-                        HStack(spacing: 1) {
-                            ForEach(filteredCourses.indices, id: \.self) { index in
-                                SingleTimeline(courses: .constant(filteredCourses[index]))
-                                    .frame(width: dayWidth)
+                        ScrollView {
+                            HStack(spacing: 1) {
+                                // Time Labels
+                                VStack(spacing: 0) {
+                                    ForEach(8...22, id: \.self) { hour in
+                                        Text("\(hour):00")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                            .frame(height: 99)
+                                            .offset(y: -40)
+                                    }
+                                }
+                                .frame(width: 45) // Reduced width for tighter layout
+                                .background(Color(UIColor.systemBackground))
+                            
+                                ForEach(filteredCourses.indices, id: \.self) { index in
+                                    SingleTimeline(courses: .constant(filteredCourses[index]))
+                                        .frame(width: dayWidth)
+                                }
                             }
+                            .padding(.horizontal)
                         }
-                        .padding(.horizontal)
                     } else {
                         let days = ["Mo", "Tu", "We", "Th", "Fr"]
                         let dayWidth = (geometry.size.width - 45) / CGFloat(days.count) - 10 // Adjust for time label width
@@ -73,13 +72,28 @@ struct CourseScheduleByWeekView: View {
                             .padding(.horizontal)
                             .frame(height: 20)
 
-                        HStack(spacing: 1) {
-                            ForEach(filteredCourses.indices, id: \.self) { index in
-                                SingleTimeline(courses: .constant(filteredCourses[index]))
-                                    .frame(width: dayWidth)
+                        ScrollView {
+                            HStack(spacing: 1) {
+                                // Time Labels
+                                VStack(spacing: 0) {
+                                    ForEach(8...22, id: \.self) { hour in
+                                        Text("\(hour):00")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                            .frame(height: 99)
+                                            .offset(y: -40)
+                                    }
+                                }
+                                .frame(width: 45) // Reduced width for tighter layout
+                                .background(Color(UIColor.systemBackground))
+                                
+                                ForEach(filteredCourses.indices, id: \.self) { index in
+                                    SingleTimeline(courses: .constant(filteredCourses[index]))
+                                        .frame(width: dayWidth)
+                                }
                             }
+                            .padding(.horizontal)
                         }
-                        .padding(.horizontal)
                     }
                 }
             }

@@ -15,22 +15,14 @@ struct SingleTimeline: View {
         
         var body: some View {
             GeometryReader { geometry in
-                let totalHeight = geometry.size.height
+                let totalHeight = CGFloat(1400)
                 let numberOfSlots = 14
-                let currentTime = Date()
-                let currentYOffset = yPosition(for: currentTime, in: totalHeight) // Calculate Y position of current time
+                //let currentTime = Date()
+                //let currentYOffset = yPosition(for: currentTime, in: totalHeight) // Calculate Y position of current time
                 
                 ZStack(alignment: .top) {
                     // Grid
                     TimeSlotGrid(numberOfSlots: numberOfSlots, totalHeight: totalHeight)
-                    
-                    // Current Time Red Line
-                    if currentTime >= start && currentTime <= end {
-                        Rectangle()
-                            .fill(Color.red)
-                            .frame(height: 2) // Thickness of the red line
-                            .offset(y: currentYOffset)
-                    }
                     
                     // Courses
                     ForEach(courses) { course in
@@ -95,14 +87,17 @@ struct CourseView: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 2)
-            .fill(Color.blue.opacity(1))
+            .fill(Color.indigo)
             .frame(height: height*0.98)
             .overlay(
                 VStack(alignment: .leading, spacing:0) {
-                    Text(course.name)
-                        .font(.caption)
-                        .bold()
-                        .foregroundColor(.primary)
+                    HStack {
+                        Text(course.name)
+                            .font(.caption)
+                            .bold()
+                            .foregroundColor(.primary)
+                        Spacer()
+                    }
                     HStack (spacing: 2){
                         Image(systemName: "location.circle")
                             .font(.system(size: 10))
@@ -110,6 +105,7 @@ struct CourseView: View {
                             .font(.caption2)
                             .foregroundColor(.primary)
                     }
+                    
                     HStack (spacing: 2){
                         Image(systemName: "graduationcap")
                             .font(.system(size: 10))
@@ -118,7 +114,7 @@ struct CourseView: View {
                             .foregroundColor(.primary)
                     }
                 }
-                .padding(2),
+                .padding(4),
                 alignment: .topLeading
             )
             .offset(y: yOffset)
@@ -127,13 +123,13 @@ struct CourseView: View {
 
 #Preview{
     let courseViewModel = CourseViewModel(mockData: mockData)
-    SingleTimeline(courses: Binding(
-        get: { courseViewModel.weekCourses.filter { $0.weekday == 5 } },
-        set: { newValue in
-            // Update courseViewModel.weekCourses with the changes from newValue
-            // This may require additional logic to ensure filtered courses are updated correctly
-        }
-    ))
+    ScrollView {
+        SingleTimeline(courses: Binding(
+            get: { courseViewModel.weekCourses.filter { $0.weekday == 1 } },
+            set: { newValue in
+                // Update courseViewModel.weekCourses with the changes from newValue
+                // This may require additional logic to ensure filtered courses are updated correctly
+            }
+        ))
+    }
 }
-
-
