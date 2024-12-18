@@ -11,26 +11,26 @@ struct OtherView: View {
     var body: some View {
         NavigationView {
             List {
-                NavigationLink(destination: WifiView()) {
+                NavigationLink(destination: EventView()) {
                     Label(
                         title: { Text("行事曆") },
                         icon: { Image(systemName: "calendar")}
                     )
                 }
                 
-                NavigationLink(destination: WifiView()) {
-                    Label(
-                        title: { Text("圖書館") },
-                        icon: { Image(systemName: "books.vertical.fill") }
-                    )
-                }
+//                NavigationLink(destination: WifiView()) {
+//                    Label(
+//                        title: { Text("圖書館") },
+//                        icon: { Image(systemName: "books.vertical.fill") }
+//                    )
+//                }
                 
-                NavigationLink(destination: WifiView()) {
-                    Label(
-                        title: { Text("無線網路") },
-                        icon: { Image(systemName: "wifi")}
-                    )
-                }
+//                NavigationLink(destination: WifiView()) {
+//                    Label(
+//                        title: { Text("無線網路") },
+//                        icon: { Image(systemName: "wifi")}
+//                    )
+//                }
                 
                 NavigationLink(destination: WifiView()) {
                     Label(

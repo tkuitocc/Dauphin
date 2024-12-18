@@ -38,6 +38,10 @@ struct ContentView: View {
                     .tabItem {
                         Label("Course", systemImage: "calendar.day.timeline.left")
                     }
+                OtherView()
+                    .tabItem {
+                        Label("Other", systemImage: "chart.line.text.clipboard")
+                    }
                 SettingView(viewModel: viewModel)
                     .tabItem {
                         Label("setting", systemImage: "gear")
