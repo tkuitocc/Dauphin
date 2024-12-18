@@ -42,6 +42,9 @@ class EventManager {
         calendarEvent.startDate = event.startDate
         calendarEvent.endDate = event.endDate
         calendarEvent.calendar = calendar
+        if event.startDate == event.endDate {
+            calendarEvent.isAllDay = true
+        }
         
         do {
             try eventStore.save(calendarEvent, span: .thisEvent)

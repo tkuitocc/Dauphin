@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var viewModel = AuthViewModel()
     @Environment(\.colorScheme) var colorScheme
+    @AppStorage("isFirstTime") private var isFirstTime: Bool = true
     
     var body: some View {
         if #available(iOS 18.0, *) {
@@ -31,6 +32,10 @@ struct ContentView: View {
                 }
                 
             }
+            .sheet(isPresented: $isFirstTime, content: {
+                InrtoScreen()
+                    .interactiveDismissDisabled()
+            })
             
         } else {
             TabView {
@@ -47,6 +52,10 @@ struct ContentView: View {
                         Label("setting", systemImage: "gear")
                     }
                 }
+                .sheet(isPresented: $isFirstTime, content: {
+                    InrtoScreen()
+                        .interactiveDismissDisabled()
+                })
         }
         
     }
