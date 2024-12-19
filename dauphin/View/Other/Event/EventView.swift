@@ -88,7 +88,7 @@ struct EventView: View {
 
 private var dateFormatter: DateFormatter {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy M d EEEE"
+    formatter.dateFormat = "yyyy M d EEEㄆE"
     formatter.locale = Locale(identifier: "zh_TW")
     return formatter
 }
