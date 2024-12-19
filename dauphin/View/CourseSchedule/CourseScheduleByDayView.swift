@@ -81,7 +81,7 @@ struct CourseScheduleByDayView: View {
                                         .font(.subheadline)
                                         .foregroundColor(selectedDateIndex == index ? .white : .gray)
                                 }
-                                .frame(width: 60, height: 80)
+                                .frame(width: 70, height: 90)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
                                         .fill(selectedDateIndex == index ? Color.accentColor : Color(UIColor.systemGray5))

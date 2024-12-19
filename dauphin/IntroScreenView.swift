@@ -20,7 +20,7 @@ struct InrtoScreen: View {
             
             //Points View
             VStack(alignment: .leading, spacing: 25,content: {
-                PointView(symbol: "laptopcomputer.trianglebadge.exclamationmark", title: "Open Source", subtitle: "我們會開源我們的原始碼，如果你不喜歡歡迎自己到GitHub上改。")
+                PointView(symbol: "laptopcomputer.trianglebadge.exclamationmark", title: "Open Source", subtitle: "我們會開放我們的原始碼，如果你對現在的程式感到不滿意歡迎自己到GitHub上改。")
                 
                 PointView(symbol: "list.bullet.rectangle", title: "Local First", subtitle: "一些重複的資料我們會用安全的方式存在本地端，讓你在連不到學校伺服器也可以知道課表。")
                 
@@ -54,13 +54,14 @@ struct InrtoScreen: View {
             Image(systemName: symbol)
                 .font(.largeTitle)
                 .foregroundStyle(Color.blue.gradient)
-                .frame(width: 45)
+                .frame(width: 40)
             VStack(alignment: .leading,spacing: 6, content: {
                 Text(title)
                     .font(.title3)
                     .fontWeight(.semibold)
                 
                 Text(subtitle)
+                    .font(.caption)
                     .foregroundStyle(.gray)
             })
         }
