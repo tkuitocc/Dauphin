@@ -14,6 +14,7 @@
 		185C49592CF6DD8400589C39 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185C49582CF6DD8400589C39 /* SwiftUI.framework */; };
 		185C49662CF6DD8600589C39 /* CoursesWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		188D2E7F2CF81E4F005E1B52 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 188D2E7E2CF81E4F005E1B52 /* KeychainSwift */; };
+		18F5FBF82D2E706100D3212C /* Code39 in Frameworks */ = {isa = PBXBuildFile; productRef = 18F5FBF72D2E706100D3212C /* Code39 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18F5FBF82D2E706100D3212C /* Code39 in Frameworks */,
 				1826CDA82CF4477F00471CA4 /* KeychainSwift in Frameworks */,
 				184BADB32CFAB273001811DB /* Reachability in Frameworks */,
 			);
@@ -245,6 +247,7 @@
 			packageProductDependencies = (
 				1826CDA72CF4477F00471CA4 /* KeychainSwift */,
 				184BADB22CFAB273001811DB /* Reachability */,
+				18F5FBF72D2E706100D3212C /* Code39 */,
 			);
 			productName = campuspass_ios;
 			productReference = 18B368192CE5FA110027FEBE /* dauphin.app */;
@@ -337,6 +340,7 @@
 			packageReferences = (
 				1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				18DF0BEB2CFAB056008E2674 /* XCRemoteSwiftPackageReference "Reachability" */,
+				18F5FBF62D2E6FD900D3212C /* XCRemoteSwiftPackageReference "swiftui-code39" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 18B3681A2CE5FA110027FEBE /* Products */;
@@ -870,6 +874,14 @@
 				kind = branch;
 			};
 		};
+		18F5FBF62D2E6FD900D3212C /* XCRemoteSwiftPackageReference "swiftui-code39" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jiahan-wu/swiftui-code39.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -892,6 +904,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */;
 			productName = KeychainSwift;
+		};
+		18F5FBF72D2E706100D3212C /* Code39 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 18F5FBF62D2E6FD900D3212C /* XCRemoteSwiftPackageReference "swiftui-code39" */;
+			productName = Code39;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
