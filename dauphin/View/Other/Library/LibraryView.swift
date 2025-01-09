@@ -14,10 +14,17 @@ struct LibraryView: View {
         if authViewModel.isLoggedIn {
             ScrollView{
                 VStack {
-                    Code39View("\(authViewModel.ssoStuNo)")
-                        .frame(width: 296, height: 96)
+                    VStack(){
+                        Code39View("\(authViewModel.ssoStuNo)")
+                            .frame(width: 296, height: 96)
+                    }
+                    .padding(20)
+                    .background(Color.white)
                     Text("學號：\(authViewModel.ssoStuNo)")
+                        .padding(5)
                 }
+                .background(Color.accentColor)
+                .cornerRadius(10)
             }
         } else {
             LibSSOLoginView(viewModel: authViewModel)
