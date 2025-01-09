@@ -18,7 +18,7 @@ struct CourseScheduleByDayView: View {
     @ObservedObject var authViewModel: AuthViewModel
     @State private var selectedDateIndex: Int = 0
     @State private var dates: [DateItem] = generateDates(includeSaturday: false)
-
+    @State private var showSheet = false
     static func generateDates(includeSaturday: Bool = false) -> [DateItem] {
         let calendar = Calendar.current
         let today = Date()
@@ -63,6 +63,9 @@ struct CourseScheduleByDayView: View {
                     .font(.title)
                     .fontWeight(.bold)
                     .padding(.horizontal)
+                    .onTapGesture {
+                        showSheet = true
+                    }
 
                 Text(getFormattedDate())
                     .foregroundColor(.gray)
@@ -94,6 +97,10 @@ struct CourseScheduleByDayView: View {
                             }
                         }
                         .padding(5)
+                    }
+                    .sheet(isPresented: $showSheet) {
+                        LibraryView(authViewModel: authViewModel)
+                            .padding()
                     }
                     .onAppear {
                         let hasSaturdayCourses = courseViewModel.weekCourses.contains { $0.weekday == 6 } // Assuming 6 = Saturday
