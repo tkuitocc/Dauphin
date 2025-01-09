@@ -14,7 +14,6 @@ struct LibraryView: View {
         if authViewModel.isLoggedIn {
             ScrollView{
                 VStack {
-                    Text("圖書館個人條碼")
                     Code39View("\(authViewModel.ssoStuNo)")
                         .frame(width: 296, height: 96)
                     Text("學號：\(authViewModel.ssoStuNo)")
