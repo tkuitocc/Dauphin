@@ -1,6 +1,6 @@
 //
 //  CourseScheduleByWeekView.swift
-//  campuspass_ios
+//  dauphin
 //
 //  Created by \u8b19 on 11/19/24.
 //
@@ -9,140 +9,142 @@
 import SwiftUI
 
 struct CourseScheduleByWeekView: View {
-    
     @ObservedObject var courseViewModel: CourseViewModel
-    
+
+    var isSaturday: Int {
+        courseViewModel.weekCourses.filter { $0.weekday == 6 }.count
+    }
+
     var body: some View {
         GeometryReader { geometry in
-            VStack {
-               
-                HStack(spacing: 3) {
-                    ForEach(0..<6, id: \.self) { index in
-                        let day = ["Mo", "Tu", "We", "Th", "Fr", "Sa"][index]
-                        VStack {
-                            Text(day)
-                                .font(.headline)
+            HStack(alignment: .top, spacing: 0) { // Reduced spacing between time and timeline
+                // Timeline
+                VStack {
+                    if isSaturday > 0 {
+                        let days = ["Mo", "Tu", "We", "Th", "Fr", "Sa"]
+                        let dayWidth = (geometry.size.width - 45) / CGFloat(days.count) - 10 // Adjust for time label width
+                        let filteredCourses = (1...6).map { day in
+                            courseViewModel.weekCourses.filter { $0.weekday == day }
                         }
-                        .frame(width: geometry.size.width / 6 - 10)
+                        
+                        WeekdaysView(
+                            days: days,
+                            width: dayWidth,
+                            currentDay: Calendar.current.component(.weekday, from: Date()) // Pass current weekday
+                        )
+                            .padding(.horizontal)
+                            .frame(height: 20)
+
+                        ScrollView {
+                            HStack(spacing: 1) {
+                                // Time Labels
+                                VStack(spacing: 0) {
+                                    ForEach(8...22, id: \.self) { hour in
+                                        Text("\(hour):00")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                            .frame(height: 99)
+                                            .offset(y: -40)
+                                    }
+                                }
+                                .frame(width: 45) // Reduced width for tighter layout
+                                .background(Color(UIColor.systemBackground))
+                            
+                                ForEach(filteredCourses.indices, id: \.self) { index in
+                                    SingleTimeline(courses: .constant(filteredCourses[index]))
+                                        .frame(width: dayWidth)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                    } else {
+                        let days = ["Mo", "Tu", "We", "Th", "Fr"]
+                        let dayWidth = (geometry.size.width - 45) / CGFloat(days.count) - 10 // Adjust for time label width
+                        let filteredCourses = (1...5).map { day in
+                            courseViewModel.weekCourses.filter { $0.weekday == day }
+                        }
+                        
+                        WeekdaysView(
+                            days: days,
+                            width: dayWidth,
+                            currentDay: Calendar.current.component(.weekday, from: Date()) // Pass current weekday
+                        )
+                            .padding(.horizontal)
+                            .frame(height: 20)
+
+                        ScrollView {
+                            HStack(spacing: 1) {
+                                // Time Labels
+                                VStack(spacing: 0) {
+                                    ForEach(8...22, id: \.self) { hour in
+                                        Text("\(hour):00")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                            .frame(height: 99)
+                                            .offset(y: -40)
+                                    }
+                                }
+                                .frame(width: 45) // Reduced width for tighter layout
+                                .background(Color(UIColor.systemBackground))
+                                
+                                ForEach(filteredCourses.indices, id: \.self) { index in
+                                    SingleTimeline(courses: .constant(filteredCourses[index]))
+                                        .frame(width: dayWidth)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
                     }
                 }
-                .padding(.horizontal)
-                .frame(height: 20)
-                HStack(spacing: 1) {
-                    ForEach(0..<6, id: \.self) { index in
-                        SingleTimeline(courses: Binding(get: {
-                            courseViewModel.weekCourses[index]
-                        }, set: { newValue in
-                            courseViewModel.weekCourses[index] = newValue
-                        }))
-                        .frame(width: geometry.size.width / 6 - 10)
+            }
+            .padding(.top, 0)
+        }
+    }
+}
+
+struct WeekdaysView: View {
+    let days: [String]
+    let width: CGFloat
+    let currentDay: Int
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(0..<days.count, id: \.self) { index in
+                let dayIndex = index + 1
+                let date = dateForDay(weekday: dayIndex)
+                
+                HStack (alignment: .bottom){
+                    Text(days[index])
+                        .font(.title3)
+                        .foregroundColor(.gray)
+
+                    ZStack {
+                        if dayIndex == currentDay-1 {
+                            Circle()
+                                .fill(Color.red)
+                                .frame(width: 28, height: 28)
+                        }
+                        
+                        Text("\(date)")
+                            .font(.title3)
+                            .foregroundColor(dayIndex == currentDay-1 ? .white : .gray)
                     }
                 }
-                .padding(.horizontal)
+                .frame(width: width, alignment: .center)
             }
         }
     }
-}
-
-struct TimeSlotGrid: View {
-    let numberOfSlots: Int
-    let totalHeight: CGFloat
     
-    var body: some View {
-        VStack(spacing: 0) {
-            ForEach(0..<numberOfSlots, id: \.self) { index in
-                RoundedRectangle(cornerRadius: 2)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 0.5)
-                    .frame(height: totalHeight / CGFloat(numberOfSlots))
-
-            }
-        }
-    }
-}
-
-struct CourseView: View {
-    let course: Course
-    let height: CGFloat
-    let yOffset: CGFloat
-    
-    var body: some View {
-        RoundedRectangle(cornerRadius: 2)
-            .fill(Color.blue.opacity(1))
-            .frame(height: height*0.98)
-            .overlay(
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(course.name)
-                        .font(.caption)
-                        .bold()
-                        .foregroundColor(.white)
-                    Text(course.room)
-                        .font(.caption2)
-                        .foregroundColor(.white.opacity(0.7))
-                    Text(course.stdNo)
-                        .font(.caption2)
-                        .foregroundColor(.white.opacity(0.7))
-                }
-                .padding(4),
-                alignment: .topLeading
-            )
-            .offset(y: yOffset)
-    }
-}
-
-// 主視圖
-struct SingleTimeline: View {
-    @Binding var courses: [Course]
-    
-    let baseDate = Calendar.current.startOfDay(for: Date())
-    let start = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Calendar.current.startOfDay(for: Date()))!
-    let end = Calendar.current.date(bySettingHour: 22, minute: 0, second: 0, of: Calendar.current.startOfDay(for: Date()))!
-    
-    var body: some View {
-        GeometryReader { geometry in
-            let totalHeight = geometry.size.height
-            let numberOfSlots = 14
-            
-            ZStack(alignment: .top) {
-                TimeSlotGrid(numberOfSlots: numberOfSlots, totalHeight: totalHeight)
-            
-                ForEach(courses) { course in
-                    let adjustedStartTime = adjustedTime(for: course.startTime)
-                    let adjustedEndTime = adjustedTime(for: course.endTime)
-                    
-                    CourseView(
-                        course: course,
-                        height: heightForEvent(adjustedStartTime, adjustedEndTime, in: totalHeight),
-                        yOffset: yPosition(for: adjustedStartTime, in: totalHeight)
-                    )
-                }
-            }
-        }
-    }
-
-    // 調整時間到整點
-    private func adjustedTime(for time: Date) -> Date {
+    // Helper to get the date for a specific weekday
+    private func dateForDay(weekday: Int) -> Int {
         let calendar = Calendar.current
-        return calendar.date(bySettingHour: calendar.component(.hour, from: time), minute: 0, second: 0, of: baseDate)!
+        let today = Date()
+        let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: today))!
+        let targetDay = calendar.date(byAdding: .day, value: weekday, to: weekStart)!
+        return calendar.component(.day, from: targetDay)
     }
 
-    // 計算課程的高度
-    private func heightForEvent(_ startTime: Date, _ endTime: Date, in totalHeight: CGFloat) -> CGFloat {
-        let totalDuration = end.timeIntervalSince(start)
-        let eventDuration = endTime.timeIntervalSince(startTime)
-        return CGFloat(eventDuration / totalDuration) * totalHeight
-    }
-
-    // 計算課程的垂直位置
-    private func yPosition(for time: Date, in totalHeight: CGFloat) -> CGFloat {
-        let totalDuration = end.timeIntervalSince(start)
-        let eventOffset = time.timeIntervalSince(start)
-        let relativePosition = eventOffset / totalDuration
-        return CGFloat(relativePosition) * totalHeight
-    }
 }
-
-
-
 #Preview{
     let courseViewModel = CourseViewModel(mockData: mockData)
     CourseScheduleByWeekView(courseViewModel: courseViewModel)

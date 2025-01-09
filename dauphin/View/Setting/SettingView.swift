@@ -20,19 +20,19 @@ struct SettingView: View {
                     )
                 }
                 
-                NavigationLink(destination: PassWordView()) {
-                    Label(
-                        title: { Text("密碼") },
-                        icon: { Image(systemName: "person.badge.key") }
-                    )
-                }
+//                NavigationLink(destination: PassWordView()) {
+//                    Label(
+//                        title: { Text("密碼") },
+//                        icon: { Image(systemName: "person.badge.key") }
+//                    )
+//                }
                 
-                NavigationLink(destination: WifiView()) {
-                    Label(
-                        title: { Text("無線網路") },
-                        icon: { Image(systemName: "wifi")}
-                    )
-                }
+//                NavigationLink(destination: WifiView()) {
+//                    Label(
+//                        title: { Text("無線網路") },
+//                        icon: { Image(systemName: "wifi")}
+//                    )
+//                }
                 
                 NavigationLink(destination: WifiView()) {
                     Label(

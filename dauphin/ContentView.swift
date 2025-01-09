@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var viewModel = AuthViewModel()
     @Environment(\.colorScheme) var colorScheme
+    @AppStorage("isFirstTime") private var isFirstTime: Bool = true
     
     var body: some View {
         if #available(iOS 18.0, *) {
@@ -17,20 +18,19 @@ struct ContentView: View {
                 Tab("Course", systemImage: "calendar.day.timeline.left"){
                     CourseScheduleView(authViewModel: viewModel)
                 }
-                
-                //Tab("Library", systemImage: "books.vertical.fill"){
-                //    LibraryView(authViewModel: viewModel)
-                //}
-                
-                Tab("other", systemImage: "chart.line.text.clipboard"){
-                    OtherView()
+                Tab("Other", systemImage: "chart.line.text.clipboard"){
+                    OtherView(authViewModel: viewModel)
                 }
                 
-                Tab("setting", systemImage: "gear") {
+                Tab("Setting", systemImage: "gear") {
                     SettingView(viewModel: viewModel)
                 }
                 
             }
+            .sheet(isPresented: $isFirstTime, content: {
+                InrtoScreen()
+                    .interactiveDismissDisabled()
+            })
             
         } else {
             TabView {
@@ -38,11 +38,19 @@ struct ContentView: View {
                     .tabItem {
                         Label("Course", systemImage: "calendar.day.timeline.left")
                     }
+                OtherView(authViewModel: viewModel)
+                    .tabItem {
+                        Label("Other", systemImage: "chart.line.text.clipboard")
+                    }
                 SettingView(viewModel: viewModel)
                     .tabItem {
                         Label("setting", systemImage: "gear")
                     }
                 }
+                .sheet(isPresented: $isFirstTime, content: {
+                    InrtoScreen()
+                        .interactiveDismissDisabled()
+                })
         }
         
     }

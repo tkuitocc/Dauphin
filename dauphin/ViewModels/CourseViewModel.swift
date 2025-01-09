@@ -1,9 +1,3 @@
-//
-//  CourseViewModel.swift
-//  campuspass_ios
-//
-//  Created by \u8b19 on 11/17/24.
-//
 import SwiftUI
 import Combine
 import Reachability
@@ -12,21 +6,254 @@ import Reachability
 class CourseViewModel: ObservableObject {
     private let appGroupDefaults = UserDefaults(suiteName: "group.cantpr09ram.dauphin")
 
-    @Published var weekCourses: [[Course]]
+    @Published var weekCourses: [Course] = []
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     
-    private var reachability: Reachability!
+    private var reachability: Reachability
     private var helper: CustomAES256Helper?
     private var timeoutWorkItem: DispatchWorkItem?
-    
-    var cancellables = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
         
     init() {
-        self.weekCourses = Array(repeating: [Course](), count: 6)
-        
+        // Initialize reachability
         reachability = try! Reachability()
 
+        // Configure reachability callbacks
+        configureReachability()
+
+        // Start reachability monitoring
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start reachability notifier: \(error)")
+        }
+
+        // Initialize encryption helper asynchronously
+        Task {
+            await initializeHelper()
+        }
+    }
+    
+    init(mockData: [Course]) {
+        self.weekCourses = mockData
+        self.reachability = try! Reachability()
+    }
+    
+    // MARK: - Helper Initialization
+    private func initializeHelper() async {
+        if let key = KeychainManager.shared.get(forKey: "AES256KEY"),
+           let iv = KeychainManager.shared.get(forKey: "AES256IV") {
+            helper = CustomAES256Helper(key: key, iv: iv)
+            print("✅ Successfully initialized helper with AES256 key and IV.")
+        } else {
+            await MainActor.run {
+                self.errorMessage = "Failed to retrieve AES256 key or IV from Keychain."
+            }
+            print("❌ Error: \(errorMessage ?? "Unknown error")")
+        }
+    }
+    
+    // MARK: - Cache Management
+    func loadCoursesFromCache() -> [Course]? {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+
+        guard let data = appGroupDefaults?.data(forKey: Constants.Courses) else {
+            print("❌ No cached data found for key: \(Constants.Courses)")
+            return nil
+        }
+
+        do {
+            let courses = try decoder.decode([Course].self, from: data)
+            print("✅ Successfully loaded courses from cache.")
+            return courses
+        } catch {
+            print("❌ Failed to decode cached courses: \(error)")
+            return nil
+        }
+    }
+
+    func saveCoursesToCache(courses: [Course]) {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+
+        do {
+            let data = try encoder.encode(courses)
+            appGroupDefaults?.set(data, forKey: Constants.Courses)
+            print("✅ Courses saved to cache successfully.")
+        } catch {
+            print("❌ Failed to encode and save courses: \(error)")
+        }
+    }
+    
+    // MARK: - Fetch Courses
+    func fetchCourses(with stdNo: String) async {
+        timeoutWorkItem?.cancel()
+
+        if let cachedCourses = loadCoursesFromCache() {
+            setCacheTimeoutFallback(using: cachedCourses)
+        }
+
+        guard let helper = helper else {
+            await updateUI(error: "Encryption helper not initialized.")
+            return
+        }
+
+        guard reachability.connection != .unavailable else {
+            if let cachedCourses = loadCoursesFromCache() {
+                await updateUI(error: "No internet connection. Showing cached data.", courses: cachedCourses)
+            }
+            return
+        }
+
+        do {
+            let encryptedQuery = try await createEncryptedQuery(for: stdNo, helper: helper)
+            let url = URL(string: "https://ilifeapi.az.tku.edu.tw/api/ilifeStuClassApi?q=\(encryptedQuery)")!
+
+            //isLoading = true
+            let (data, response) = try await URLSession.shared.data(from: url)
+            guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
+                throw URLError(.badServerResponse)
+            }
+
+            // Use parseCourseData to process API response
+            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                let courses = parseCourseData(apiData: json)
+                saveCoursesToCache(courses: courses)
+                await updateUI(courses: courses)
+            } else {
+                throw URLError(.cannotParseResponse)
+            }
+
+        } catch {
+            await updateUI(error: "Failed to fetch courses: \(error.localizedDescription)")
+        }
+    }
+
+    private func createEncryptedQuery(for stdNo: String, helper: CustomAES256Helper) async throws -> String {
+        guard let encrypted = helper.encrypt(data: "20220901200540356," + stdNo) else {
+            throw EncryptionError.failed
+        }
+        guard let encoded = encrypted.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            throw URLError(.badServerResponse)
+        }
+        return encoded
+    }
+    
+    // MARK: - Parse Course Data
+    private func parseCourseData(apiData: [String: Any]) -> [Course] {
+        var weekCourses = [Course]()
+        
+        guard let stuelelist = apiData["stuelelist"] as? [[String: Any]] else {
+            print("❌ Failed to parse 'stuelelist' from API data.")
+            return weekCourses
+        }
+
+        for courseData in stuelelist {
+            guard let weekString = courseData["week"] as? String,
+                  let weekIndex = Int(weekString),
+                  (1...6).contains(weekIndex) else {
+                print("❌ Invalid or missing 'week' in course data.")
+                continue
+            }
+
+            //let name = (courseData["ch_cos_name"] as? String ?? "Unknown")
+            //    .replacingOccurrences(of: "\\s*\\(.*\\)", with: "", options: .regularExpression)
+            let name = (courseData["ch_cos_name"] as? String ?? "Unknown")
+                
+            let room = courseData["room"] as? String ?? (courseData["note"] as? String ?? "Unknown Room")
+            let teacher = courseData["teach_name"] as? String ?? "Unknown Teacher"
+            let seatNo = courseData["seat_no"] as? String ?? "Unknown Seat"
+
+            guard let timeSessions = courseData["timePlase"] as? [String: Any],
+                  let sesses = timeSessions["sesses"] as? [String],
+                  let firstSession = sesses.first,
+                  let lastSession = sesses.last,
+                  let firstSessionInt = Int(firstSession),
+                  let lastSessionInt = Int(lastSession),
+                  let start = sessionToStartTime(session: firstSessionInt),
+                  let end = sessionToEndTime(session: lastSessionInt) else {
+                print("❌ Invalid or missing time information for course: \(name)")
+                continue
+            }
+
+            let time = sesses.joined(separator: ", ")
+            
+            weekCourses.append(
+                Course(
+                    name: name,
+                    room: room,
+                    teacher: teacher,
+                    time: time,
+                    startTime: start,
+                    endTime: end,
+                    stdNo: seatNo,
+                    weekday: weekIndex
+                )
+            )
+        }
+        
+        print("✅ Successfully parsed \(weekCourses.count) courses.")
+        return weekCourses
+    }
+
+    // MARK: - Time Helpers
+    private func sessionToStartTime(session: Int) -> Date? {
+        let sessionTimes = [
+            1: 8, 2: 9, 3: 10, 4: 11, 5: 12, 6: 13,
+            7: 14, 8: 15, 9: 16, 10: 17, 11: 18,
+            12: 19, 13: 20, 14: 21
+        ]
+
+        guard let hour = sessionTimes[session] else { return nil }
+        let components = DateComponents(year: 1989, month: 6, day: 4, hour: hour, minute: 10)
+        return Calendar.current.date(from: components)
+    }
+
+    private func sessionToEndTime(session: Int) -> Date? {
+        let sessionTimes = [
+            1: 9, 2: 10, 3: 11, 4: 12, 5: 13, 6: 14,
+            7: 15, 8: 16, 9: 17, 10: 18, 11: 19,
+            12: 20, 13: 21, 14: 22
+        ]
+
+        guard let hour = sessionTimes[session] else { return nil }
+        let components = DateComponents(year: 1989, month: 6, day: 4, hour: hour, minute: 0)
+        return Calendar.current.date(from: components)
+    }
+
+    // MARK: - UI Updates
+    private func setCacheTimeoutFallback(using cachedCourses: [Course]) {
+        let workItem = DispatchWorkItem { [weak self] in
+            Task {
+                await self?.updateUI(error: "Fetching data took too long. Using cached data.", courses: cachedCourses)
+            }
+        }
+        timeoutWorkItem = workItem
+        DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: workItem)
+    }
+
+    private func updateUI(error: String, courses: [Course]? = nil) async {
+        await MainActor.run {
+            self.errorMessage = error
+            self.isLoading = false
+            if let courses = courses {
+                self.weekCourses = courses
+            }
+        }
+    }
+
+    private func updateUI(courses: [Course]) async {
+        await MainActor.run {
+            self.weekCourses = courses
+            self.errorMessage = nil
+            self.isLoading = false
+        }
+    }
+
+    // MARK: - Reachability Configuration
+    private func configureReachability() {
         reachability.whenReachable = { reachability in
             DispatchQueue.main.async {
                 if reachability.connection == .wifi {
@@ -43,267 +270,10 @@ class CourseViewModel: ObservableObject {
                 self.errorMessage = "No internet connection. Please check your network."
             }
         }
-
-        do {
-            try reachability.startNotifier()
-        } catch {
-            print("Unable to start notifier")
-        }
-            
-        Task {
-            initializeHelper()
-        }
     }
-    
-    init(mockData: [[Course]]) {
-        self.weekCourses = mockData
-    }
-    
-    private func initializeHelper() {
-        if let key = KeychainManager.shared.get(forKey: "AES256KEY"),
-           let iv = KeychainManager.shared.get(forKey: "AES256IV") {
-            helper = CustomAES256Helper(key: key, iv: iv)
-            print("✅ Successfully initialized helper with AES256 key and IV retrieved from Keychain.")
-        } else {
-            errorMessage = "Failed to retrieve AES256 key or IV from Keychain."
-            print("❌ Error: \(errorMessage ?? "Unknown error")")
-        }
-    }
-    
-    func loadCoursesFromCache() -> [[Course]]? {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+}
 
-        guard let appGroupDefaults = self.appGroupDefaults else {
-            print("❌ App Group Defaults is not available.")
-            return nil
-        }
-
-        if let data = appGroupDefaults.data(forKey: Constants.Courses) {
-            do {
-                let courses = try decoder.decode([[Course]].self, from: data)
-                print("✅ Loaded courses from cache successfully!")
-                return courses
-            } catch {
-                print("❌ Failed to decode cached courses: \(error)")
-            }
-        } else {
-            print("❌ No data found for key: \(Constants.Courses)")
-        }
-        return nil
-    }
-
-
-    func saveCoursesToCache(courses: [[Course]]) {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-
-        guard let appGroupDefaults = self.appGroupDefaults else {
-            print("App Group Defaults is not available.")
-            return
-        }
-
-        do {
-            let data = try encoder.encode(courses)
-            appGroupDefaults.set(data, forKey: Constants.Courses)
-            print("✅ Courses saved to cache successfully!")
-        } catch {
-            print("Failed to encode courses: \(error)")
-        }
-    }
-    
-    func fetchCourses(with stdNo: String) {
-        timeoutWorkItem?.cancel()
-        
-        if let cachedCourses = loadCoursesFromCache() {
-            let workItem = DispatchWorkItem { [weak self] in
-                self?.errorMessage = "Fetching data took too long. Using cached data."
-                self?.weekCourses = cachedCourses
-            }
-            timeoutWorkItem = workItem
-            DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: workItem)
-        }
-        
-        guard let helper = helper else {
-            DispatchQueue.main.async {
-                self.errorMessage = "Encryption helper not initialized"
-                self.isLoading = false
-            }
-            return
-        }
-        
-        guard reachability.connection != .unavailable else {
-            if let cachedCourses = loadCoursesFromCache() {
-                DispatchQueue.main.async {
-                    self.errorMessage = "No internet connection. Showing cached data."
-                    self.isLoading = false
-                    self.weekCourses = cachedCourses
-                }
-            }
-            return
-        }
-        
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let self = self else { return }
-            
-            guard let encrypted = helper.encrypt(data: "20220901200540356," + stdNo) else {
-                DispatchQueue.main.async {
-                    self.errorMessage = "Encryption failed"
-                    self.isLoading = false
-                }
-                return
-            }
-
-            guard let q = encrypted.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-                DispatchQueue.main.async {
-                    self.errorMessage = "Failed to encode query parameter"
-                    self.isLoading = false
-                }
-                return
-            }
-
-            guard let url = URL(string: "https://ilifeapi.az.tku.edu.tw/api/ilifeStuClassApi?q=\(q)") else {
-                DispatchQueue.main.async {
-                    self.errorMessage = "Invalid URL"
-                    self.isLoading = false
-                }
-                return
-            }
-
-            var request = URLRequest(url: url, timeoutInterval: Double.infinity)
-            request.httpMethod = "GET"
-
-            DispatchQueue.main.async {
-                self.isLoading = true
-            }
-            
-            let session = URLSession.shared
-            let task = session.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    DispatchQueue.main.async {
-                        self.isLoading = false
-                        self.errorMessage = "Request failed with error: \(error.localizedDescription)"
-                    }
-                    return
-                }
-                guard let data = data else {
-                    DispatchQueue.main.async {
-                        self.isLoading = false
-                        self.errorMessage = "No data received"
-                    }
-                    return
-                }
-
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    guard let jsonDict = json as? [String: Any] else {
-                        throw URLError(.badServerResponse)
-                    }
-
-                    let courses = self.parseCourseData(apiData: jsonDict)
-                    self.saveCoursesToCache(courses: courses)
-
-                    DispatchQueue.main.async {
-                        self.weekCourses = courses
-                        self.isLoading = false
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        self.isLoading = false
-                        self.errorMessage = "Failed to parse JSON: \(error.localizedDescription)"
-                    }
-                }
-            }
-            task.resume()
-        }
-    }
-
-
-    private func parseCourseData(apiData: [String: Any]) -> [[Course]] {
-        var weekCourses = Array(repeating: [Course](), count: 6)
-        if let stuelelist = apiData["stuelelist"] as? [[String: Any]] {
-            for courseData in stuelelist {
-                if let weekString = courseData["week"] as? String,
-                   let weekIndex = Int(weekString),
-                   weekIndex >= 1, weekIndex <= 6 {
-                    let name = (courseData["ch_cos_name"] as? String ?? "Unknown").replacingOccurrences(of: "\\s*\\(.*\\)", with: "", options: .regularExpression)
-                    let room = courseData["room"] as? String ?? "Unknown Room"
-                    let teacher = courseData["teach_name"] as? String ?? "Unknown Teacher"
-                    let seat_no = courseData["seat_no"] as? String ?? "Unknown Seat"
-                    if let timeSessions = courseData["timePlase"] as? [String: Any],
-                       let sesses = timeSessions["sesses"] as? [String] {
-                        let time = sesses.joined(separator: ", ")
-
-                        if let firstSession = sesses.first,
-                           let lastSession = sesses.last,
-                           let firstSessionInt = Int(firstSession),
-                           let lastSessionInt = Int(lastSession),
-                           let start = sessionToStartTime(session: firstSessionInt),
-                           let end = sessionToEndTime(session: lastSessionInt) {
-                            
-                            weekCourses[weekIndex - 1].append(
-                                Course(name: name, room: room, teacher: teacher, time: time, startTime: start, endTime: end, stdNo: seat_no)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-        return weekCourses
-    }
-
-    private func sessionToStartTime(session: Int) -> Date? {
-        let calendar = Calendar.current
-        var components = DateComponents()
-        components.year = 1989
-        components.month = 6
-        components.day = 4
-        components.minute = 10
-        switch session {
-        case 1: components.hour = 8
-        case 2: components.hour = 9
-        case 3: components.hour = 10
-        case 4: components.hour = 11
-        case 5: components.hour = 12
-        case 6: components.hour = 13
-        case 7: components.hour = 14
-        case 8: components.hour = 15
-        case 9: components.hour = 16
-        case 10: components.hour = 17
-        case 11: components.hour = 18
-        case 12: components.hour = 19
-        case 13: components.hour = 20
-        case 14: components.hour = 21
-        default: return nil
-        }
-        return calendar.date(from: components)
-    }
-
-    private func sessionToEndTime(session: Int) -> Date? {
-        let calendar = Calendar.current
-        var components = DateComponents()
-        components.year = 1989
-        components.month = 6
-        components.day = 4
-        components.minute = 0
-        switch session {
-        case 1: components.hour = 9
-        case 2: components.hour = 10
-        case 3: components.hour = 11
-        case 4: components.hour = 12
-        case 5: components.hour = 13
-        case 6: components.hour = 14
-        case 7: components.hour = 15
-        case 8: components.hour = 16
-        case 9: components.hour = 17
-        case 10: components.hour = 18
-        case 11: components.hour = 19
-        case 12: components.hour = 20
-        case 13: components.hour = 21
-        case 14: components.hour = 22
-        default: return nil
-        }
-        return calendar.date(from: components)
-    }
-
+// MARK: - Custom Errors
+enum EncryptionError: Error {
+    case failed
 }

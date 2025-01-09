@@ -1,4 +1,3 @@
-//
 //  CourseScheduleByDayView.swift
 //  campuspass_ios
 //
@@ -7,60 +6,160 @@
 
 import SwiftUI
 
+struct DateItem: Identifiable {
+    let id = UUID()
+    let day: Int
+    let weekday: String
+    let isSelected: Bool
+}
+
 struct CourseScheduleByDayView: View {
     @ObservedObject var courseViewModel: CourseViewModel
-    @State private var selectedDayIndex: Int = {
-            let weekday = Calendar.current.component(.weekday, from: Date())
-            switch weekday {
-            case 2: return 0
-            case 3: return 1
-            case 4: return 2
-            case 5: return 3 
-            case 6: return 4
-            case 7: return 5
-            default: return 0
+    @ObservedObject var authViewModel: AuthViewModel
+    @State private var selectedDateIndex: Int = 0
+    @State private var dates: [DateItem] = generateDates(includeSaturday: false)
+    @State private var showSheet = false
+    static func generateDates(includeSaturday: Bool = false) -> [DateItem] {
+        let calendar = Calendar.current
+        let today = Date()
+        let weekdayFormatter = DateFormatter()
+        weekdayFormatter.dateFormat = "EEE"
+
+        // Calculate the start of the week (Monday)
+        let weekday = calendar.component(.weekday, from: today)
+        let daysFromMonday = (weekday == 1 ? 6 : weekday - 2) // Adjust for Monday start
+        guard let startOfWeek = calendar.date(byAdding: .day, value: -daysFromMonday, to: today) else { return [] }
+
+        // Generate dates for Monday to Friday
+        var dateItems = (0..<5).map { offset in
+            let date = calendar.date(byAdding: .day, value: offset, to: startOfWeek)!
+            let day = calendar.component(.day, from: date)
+            let weekday = weekdayFormatter.string(from: date)
+            return DateItem(day: day, weekday: weekday, isSelected: false)
+        }
+
+        // Add Saturday if needed
+        if includeSaturday {
+            if let saturday = calendar.date(byAdding: .day, value: 5, to: startOfWeek) {
+                let day = calendar.component(.day, from: saturday)
+                let weekday = weekdayFormatter.string(from: saturday)
+                dateItems.append(DateItem(day: day, weekday: weekday, isSelected: false))
             }
-        }()
-    @Environment(\.colorScheme) var colorScheme
-    
+        }
+        return dateItems
+    }
+
+    private func getFormattedDate() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM, yyyy" // Month and year format
+        return formatter.string(from: Date())
+    }
+
     var body: some View {
-        VStack(spacing: 5) {
-            // Weekday Selector
-            HStack(spacing: 10) {
-                ForEach(0..<6, id: \.self) { index in
-                    let day = ["Mo", "Tu", "We", "Th", "Fr", "Sa"][index]
-                
-                    VStack {
-                        Image(systemName: "calendar")
-                            .resizable()
-                            .foregroundColor(selectedDayIndex == index ? .blue : .primary)
-                            .frame(width: 30, height: 30)
-                        Text(day)
-                            .font(.headline)
-                            .foregroundColor(selectedDayIndex == index ? .blue : .primary)
-                    }
-                    .frame(width: 50, height: 70)
+        VStack {
+            VStack(alignment: .leading) {
+                Text("Hey, \(authViewModel.ssoStuNo).")
+                    .padding(.top)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding(.horizontal)
                     .onTapGesture {
-                        selectedDayIndex = index
+                        showSheet = true
+                    }
+
+                Text(getFormattedDate())
+                    .foregroundColor(.gray)
+                    .padding(.horizontal)
+
+                ScrollViewReader { proxy in
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 16) {
+                            ForEach(dates.indices, id: \.self) { index in
+                                let date = dates[index]
+                                VStack {
+                                    Text("\(date.day)")
+                                        .font(.headline)
+                                        .foregroundColor(selectedDateIndex == index ? .white : .primary)
+                                    Text(date.weekday)
+                                        .font(.subheadline)
+                                        .foregroundColor(selectedDateIndex == index ? .white : .gray)
+                                }
+                                .frame(width: 70, height: 90)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(selectedDateIndex == index ? Color.accentColor : Color(UIColor.systemGray5))
+                                        .shadow(color: selectedDateIndex == index ? .gray.opacity(0.4) : .clear, radius: 4)
+                                )
+                                .id(index)
+                                .onTapGesture {
+                                    selectedDateIndex = index
+                                }
+                            }
+                        }
+                        .padding(5)
+                    }
+                    .sheet(isPresented: $showSheet) {
+                        LibraryView(authViewModel: authViewModel)
+                            .padding()
+                    }
+                    .onAppear {
+                        let hasSaturdayCourses = courseViewModel.weekCourses.contains { $0.weekday == 6 } // Assuming 6 = Saturday
+                        dates = Self.generateDates(includeSaturday: hasSaturdayCourses)
+
+                        if let todayIndex = dates.firstIndex(where: { $0.day == Calendar.current.component(.day, from: Date()) }) {
+                            selectedDateIndex = todayIndex
+                            proxy.scrollTo(todayIndex, anchor: .center)
+                        } else {
+                            selectedDateIndex = 1 // Default to Monday if today is Sunday or Saturday
+                        }
                     }
                 }
             }
-            .padding(.top, 0)
-            
-            // Course Cards
+
             ScrollView {
-                VStack(spacing: 16) {
-                    ForEach(courseViewModel.weekCourses[selectedDayIndex], id: \.self) { course in
-                        CourseCardView(courseName: course.name, roomNumber: course.room, teacherName: course.teacher, StartTime: course.startTime, EndTime: course.endTime, stdNo: course.stdNo)
+                if courseViewModel.weekCourses.isEmpty {
+                    Text("Loading courses...")
+                        .foregroundColor(.gray)
+                } else {
+                    let todaysCourses = courseViewModel.weekCourses.filter { $0.weekday == (selectedDateIndex + 1) } // Map index to weekday
+                    if todaysCourses.isEmpty {
+                        Text("No courses for \(dates[selectedDateIndex].weekday).")
+                            .foregroundColor(.gray)
+                    } else {
+                        ForEach(todaysCourses) { course in
+                            CourseCardView(
+                                courseName: course.name,
+                                roomNumber: course.room,
+                                teacherName: course.teacher,
+                                StartTime: course.startTime,
+                                EndTime: course.endTime,
+                                stdNo: course.stdNo
+                            )
+                            .padding(2)
+                        }
                     }
                 }
             }
+            .gesture(
+                DragGesture()
+                    .onEnded { value in
+                        if value.translation.width < -50 {
+                            // Swipe left
+                            selectedDateIndex = (selectedDateIndex + 1) % dates.count
+                        } else if value.translation.width > 50 {
+                            // Swipe right
+                            selectedDateIndex = (selectedDateIndex - 1 + dates.count) % dates.count
+                        }
+                    }
+            )
             .scrollIndicators(.hidden)
+            .presentationBackground(.thinMaterial)
         }
     }
 }
 
-#Preview{
+#Preview {
     let courseViewModel = CourseViewModel(mockData: mockData)
-    CourseScheduleByDayView(courseViewModel: courseViewModel)
+    let authViewModel = AuthViewModel()
+    CourseScheduleByDayView(courseViewModel: courseViewModel, authViewModel: authViewModel)
 }

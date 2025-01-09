@@ -17,16 +17,19 @@ struct CourseScheduleView: View {
         Group {
             if authViewModel.isLoggedIn {
                 if horizontalSizeClass == .compact {
-                    CourseScheduleByDayView(courseViewModel: viewModel)
-                        .padding(20)
+                    CourseScheduleByDayView(courseViewModel: viewModel, authViewModel: authViewModel)
                         .refreshable {
                             if !authViewModel.ssoStuNo.isEmpty {
-                                viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                Task {
+                                    await viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                }
                             }
                         }
                         .onAppear {
                             if !authViewModel.ssoStuNo.isEmpty {
-                                viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                Task {
+                                    await viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                }
                             }
                         }
                 } else {
@@ -34,12 +37,16 @@ struct CourseScheduleView: View {
                         .padding(20)
                         .refreshable {
                             if !authViewModel.ssoStuNo.isEmpty {
-                                viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                Task {
+                                    await viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                }
                             }
                         }
                         .onAppear {
                             if !authViewModel.ssoStuNo.isEmpty {
-                                viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                Task {
+                                    await viewModel.fetchCourses(with: authViewModel.ssoStuNo)
+                                }
                             }
                         }
                 }

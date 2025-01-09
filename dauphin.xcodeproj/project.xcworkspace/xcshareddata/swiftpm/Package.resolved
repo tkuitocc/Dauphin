@@ -1,5 +1,5 @@
 {
-  "originHash" : "77af8f7c2e1dc3c5a5c18b4f171ffac44a754ef749139bceddf364ffe45f65cd",
+  "originHash" : "26963f6e80a22d269a6bd412ce324956355c6cecb621d56cfdb74d0d620bf4e2",
   "pins" : [
     {
       "identity" : "keychain-swift",
@@ -17,6 +17,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "21d1dc412cfecbe6e34f1f4c4eb88d3f912654a6"
+      }
+    },
+    {
+      "identity" : "swiftui-code39",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jiahan-wu/swiftui-code39.git",
+      "state" : {
+        "revision" : "b91feac56059944e5e857c8576bc7708b2cf5b0f",
+        "version" : "1.1.0"
       }
     }
   ],
