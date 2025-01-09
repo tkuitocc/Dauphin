@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OtherView: View {
+    @ObservedObject var authViewModel: AuthViewModel
     var body: some View {
         NavigationView {
             List {
@@ -18,12 +19,12 @@ struct OtherView: View {
                     )
                 }
                 
-//                NavigationLink(destination: WifiView()) {
-//                    Label(
-//                        title: { Text("圖書館") },
-//                        icon: { Image(systemName: "books.vertical.fill") }
-//                    )
-//                }
+                NavigationLink(destination: LibraryView(authViewModel: authViewModel)) {
+                    Label(
+                        title: { Text("圖書館") },
+                        icon: { Image(systemName: "books.vertical.fill") }
+                    )
+                }
                 
 //                NavigationLink(destination: WifiView()) {
 //                    Label(
@@ -45,5 +46,5 @@ struct OtherView: View {
 }
 
 #Preview {
-    OtherView()
+    OtherView(authViewModel: AuthViewModel())
 }

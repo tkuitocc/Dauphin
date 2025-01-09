@@ -18,13 +18,8 @@ struct ContentView: View {
                 Tab("Course", systemImage: "calendar.day.timeline.left"){
                     CourseScheduleView(authViewModel: viewModel)
                 }
-                
-                //Tab("Library", systemImage: "books.vertical.fill"){
-                //    LibraryView(authViewModel: viewModel)
-                //}
-                
                 Tab("Other", systemImage: "chart.line.text.clipboard"){
-                    OtherView()
+                    OtherView(authViewModel: viewModel)
                 }
                 
                 Tab("Setting", systemImage: "gear") {
@@ -43,7 +38,7 @@ struct ContentView: View {
                     .tabItem {
                         Label("Course", systemImage: "calendar.day.timeline.left")
                     }
-                OtherView()
+                OtherView(authViewModel: viewModel)
                     .tabItem {
                         Label("Other", systemImage: "chart.line.text.clipboard")
                     }
