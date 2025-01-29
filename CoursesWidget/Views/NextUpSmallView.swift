@@ -122,6 +122,8 @@ struct CoursesNextUpSmallView: View {
                                 .padding(.leading, -8),
                             alignment: .leading
                         )
+                    } else {
+                        Spacer()
                     }
                 }
                 .containerBackground(for: .widget) {
@@ -137,4 +139,6 @@ struct CoursesNextUpSmallView: View {
     CoursesNextUpWidget()
 } timeline: {
     SimpleEntry(date: Date(), ssoStuNo: "111111111", courses: mockData, today: mockData.count)
+    
+    SimpleEntry(date: Date(), ssoStuNo: "111111111", courses: [mockData[0]], today: mockData.count)
 }
