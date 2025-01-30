@@ -16,20 +16,14 @@ class CourseViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
         
     init() {
-        // Initialize reachability
         reachability = try! Reachability()
 
-        // Configure reachability callbacks
         configureReachability()
-
-        // Start reachability monitoring
         do {
             try reachability.startNotifier()
         } catch {
             print("Unable to start reachability notifier: \(error)")
         }
-
-        // Initialize encryption helper asynchronously
         Task {
             await initializeHelper()
         }
@@ -56,6 +50,7 @@ class CourseViewModel: ObservableObject {
     
     // MARK: - Cache Management
     func loadCoursesFromCache() -> [Course]? {
+        print("Load courses from cache")
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
 
@@ -75,6 +70,7 @@ class CourseViewModel: ObservableObject {
     }
 
     func saveCoursesToCache(courses: [Course]) {
+        print("Save courses from cache")
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
 
@@ -89,6 +85,7 @@ class CourseViewModel: ObservableObject {
     
     // MARK: - Fetch Courses
     func fetchCourses(with stdNo: String) async {
+        print("Fetch courses")
         timeoutWorkItem?.cancel()
 
         if let cachedCourses = loadCoursesFromCache() {
@@ -236,6 +233,7 @@ class CourseViewModel: ObservableObject {
 
     private func updateUI(error: String, courses: [Course]? = nil) async {
         await MainActor.run {
+            print(self.errorMessage ?? "Error in fetchCourses")
             self.errorMessage = error
             self.isLoading = false
             if let courses = courses {
