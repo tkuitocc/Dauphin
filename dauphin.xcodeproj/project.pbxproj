@@ -13,6 +13,7 @@
 		185C49572CF6DD8400589C39 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185C49562CF6DD8400589C39 /* WidgetKit.framework */; };
 		185C49592CF6DD8400589C39 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185C49582CF6DD8400589C39 /* SwiftUI.framework */; };
 		185C49662CF6DD8600589C39 /* CoursesWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1869F7DC2D4AF1F00033F539 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1869F7DB2D4AF1F00033F539 /* Lottie */; };
 		188D2E7F2CF81E4F005E1B52 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 188D2E7E2CF81E4F005E1B52 /* KeychainSwift */; };
 		18F5FBF82D2E706100D3212C /* Code39 in Frameworks */ = {isa = PBXBuildFile; productRef = 18F5FBF72D2E706100D3212C /* Code39 */; };
 /* End PBXBuildFile section */
@@ -132,6 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1869F7DC2D4AF1F00033F539 /* Lottie in Frameworks */,
 				188D2E7F2CF81E4F005E1B52 /* KeychainSwift in Frameworks */,
 				184BADB52CFAB403001811DB /* Reachability in Frameworks */,
 				185C49592CF6DD8400589C39 /* SwiftUI.framework in Frameworks */,
@@ -221,6 +223,7 @@
 			packageProductDependencies = (
 				188D2E7E2CF81E4F005E1B52 /* KeychainSwift */,
 				184BADB42CFAB403001811DB /* Reachability */,
+				1869F7DB2D4AF1F00033F539 /* Lottie */,
 			);
 			productName = CoursesWidgetExtension;
 			productReference = 185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */;
@@ -341,6 +344,7 @@
 				1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				18DF0BEB2CFAB056008E2674 /* XCRemoteSwiftPackageReference "Reachability" */,
 				18F5FBF62D2E6FD900D3212C /* XCRemoteSwiftPackageReference "swiftui-code39" */,
+				1869F7D52D4AF0A70033F539 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 18B3681A2CE5FA110027FEBE /* Products */;
@@ -866,6 +870,14 @@
 				minimumVersion = 24.0.0;
 			};
 		};
+		1869F7D52D4AF0A70033F539 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.1;
+			};
+		};
 		18DF0BEB2CFAB056008E2674 /* XCRemoteSwiftPackageReference "Reachability" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
@@ -899,6 +911,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 18DF0BEB2CFAB056008E2674 /* XCRemoteSwiftPackageReference "Reachability" */;
 			productName = Reachability;
+		};
+		1869F7DB2D4AF1F00033F539 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1869F7D52D4AF0A70033F539 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
 		};
 		188D2E7E2CF81E4F005E1B52 /* KeychainSwift */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -1,25 +1,25 @@
-//
-//  campuspass_iosApp.swift
-//  campuspass_ios
-//
-//  Created by \u8b19 on 11/14/24.
-//
-
 import SwiftUI
 
 @main
-struct dauphinApp: App {
+struct MyApp: App {
+    @State private var isLoaded = false
+    @State private var errorMessage: String?
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .task {
-                    do {
-                        try await KeyConstants.loadAPIKeys()
-                        print("API Keys Loaded Successfully")
-                    } catch {
-                        print("Failed to load API keys. Error: \(error)")
+            if isLoaded {
+                ContentView() // API 金鑰載入成功後顯示主畫面
+            } else {
+                LaunchScreenView() // 顯示啟動畫面
+                    .task {
+                        do {
+                            try await KeyConstants.loadAPIKeys()
+                            isLoaded = true // 立即切換到 ContentView
+                        } catch {
+                            errorMessage = error.localizedDescription
+                        }
                     }
-                }
+            }
         }
     }
 }
