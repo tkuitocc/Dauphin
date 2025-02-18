@@ -34,7 +34,7 @@ struct SettingView: View {
 //                    )
 //                }
                 
-                NavigationLink(destination: WifiView()) {
+                NavigationLink(destination: AboutUsView()) {
                     Label(
                         title: { Text("About Us") },
                         icon: { Image(systemName: "figure.wave")}

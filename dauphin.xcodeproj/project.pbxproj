@@ -13,8 +13,8 @@
 		185C49572CF6DD8400589C39 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185C49562CF6DD8400589C39 /* WidgetKit.framework */; };
 		185C49592CF6DD8400589C39 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185C49582CF6DD8400589C39 /* SwiftUI.framework */; };
 		185C49662CF6DD8600589C39 /* CoursesWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		1869F7DC2D4AF1F00033F539 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1869F7DB2D4AF1F00033F539 /* Lottie */; };
 		188D2E7F2CF81E4F005E1B52 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 188D2E7E2CF81E4F005E1B52 /* KeychainSwift */; };
+		189DD2CF2D5C516F009AF8E7 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 189DD2CE2D5C516F009AF8E7 /* Lottie */; };
 		18F5FBF82D2E706100D3212C /* Code39 in Frameworks */ = {isa = PBXBuildFile; productRef = 18F5FBF72D2E706100D3212C /* Code39 */; };
 /* End PBXBuildFile section */
 
@@ -133,7 +133,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1869F7DC2D4AF1F00033F539 /* Lottie in Frameworks */,
 				188D2E7F2CF81E4F005E1B52 /* KeychainSwift in Frameworks */,
 				184BADB52CFAB403001811DB /* Reachability in Frameworks */,
 				185C49592CF6DD8400589C39 /* SwiftUI.framework in Frameworks */,
@@ -148,6 +147,7 @@
 				18F5FBF82D2E706100D3212C /* Code39 in Frameworks */,
 				1826CDA82CF4477F00471CA4 /* KeychainSwift in Frameworks */,
 				184BADB32CFAB273001811DB /* Reachability in Frameworks */,
+				189DD2CF2D5C516F009AF8E7 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,7 +223,6 @@
 			packageProductDependencies = (
 				188D2E7E2CF81E4F005E1B52 /* KeychainSwift */,
 				184BADB42CFAB403001811DB /* Reachability */,
-				1869F7DB2D4AF1F00033F539 /* Lottie */,
 			);
 			productName = CoursesWidgetExtension;
 			productReference = 185C49542CF6DD8400589C39 /* CoursesWidgetExtension.appex */;
@@ -251,6 +250,7 @@
 				1826CDA72CF4477F00471CA4 /* KeychainSwift */,
 				184BADB22CFAB273001811DB /* Reachability */,
 				18F5FBF72D2E706100D3212C /* Code39 */,
+				189DD2CE2D5C516F009AF8E7 /* Lottie */,
 			);
 			productName = campuspass_ios;
 			productReference = 18B368192CE5FA110027FEBE /* dauphin.app */;
@@ -453,7 +453,7 @@
 				INFOPLIST_FILE = CoursesWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CoursesWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -487,7 +487,7 @@
 				INFOPLIST_FILE = CoursesWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CoursesWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -653,7 +653,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.1;
@@ -698,7 +698,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.1;
@@ -912,15 +912,15 @@
 			package = 18DF0BEB2CFAB056008E2674 /* XCRemoteSwiftPackageReference "Reachability" */;
 			productName = Reachability;
 		};
-		1869F7DB2D4AF1F00033F539 /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1869F7D52D4AF0A70033F539 /* XCRemoteSwiftPackageReference "lottie-spm" */;
-			productName = Lottie;
-		};
 		188D2E7E2CF81E4F005E1B52 /* KeychainSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1826CDA42CF446E100471CA4 /* XCRemoteSwiftPackageReference "keychain-swift" */;
 			productName = KeychainSwift;
+		};
+		189DD2CE2D5C516F009AF8E7 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1869F7D52D4AF0A70033F539 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
 		};
 		18F5FBF72D2E706100D3212C /* Code39 */ = {
 			isa = XCSwiftPackageProductDependency;

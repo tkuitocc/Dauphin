@@ -12,14 +12,28 @@ class EventManager {
     
     /// Request access and add an event in one step
     func requestAccessAndAddEvent(event: CalendarEvent) {
-        eventStore.requestWriteOnlyAccessToEvents { [weak self] granted, error in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if granted {
-                    print("Access granted")
-                    self.addEvent(event: event)
-                } else {
-                    print("Access denied: \(String(describing: error))")
+        if #available(iOS 17.0, *) {
+            eventStore.requestWriteOnlyAccessToEvents { [weak self] granted, error in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    if granted {
+                        print("Access granted")
+                        self.addEvent(event: event)
+                    } else {
+                        print("Access denied: \(String(describing: error))")
+                    }
+                }
+            }
+        } else {
+            eventStore.requestAccess(to: .event) { [weak self] granted, error in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    if granted {
+                        print("Access granted")
+                        self.addEvent(event: event)
+                    } else {
+                        print("Access denied: \(String(describing: error))")
+                    }
                 }
             }
         }

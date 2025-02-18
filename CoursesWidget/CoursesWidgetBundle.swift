@@ -13,6 +13,5 @@ import KeychainSwift
 struct CoursesWidgetBundle: WidgetBundle {
     var body: some Widget {
         CoursesNextUpWidget()
-        CoursesWidgetControl()
     }
 }
