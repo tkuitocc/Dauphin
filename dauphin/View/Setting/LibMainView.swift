@@ -22,7 +22,7 @@ struct LibMainView: View {
                     Button(action: {
                         viewModel.logout()
                     }) {
-                        Text("登出")
+                        Text("Log out")
                             .foregroundColor(.red)
                             .padding()
                     }

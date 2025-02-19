@@ -15,24 +15,10 @@ struct SettingView: View {
             List {
                 NavigationLink(destination: LibMainView(viewModel: viewModel)) {
                     Label(
-                        title: { Text("登出/登入") },
+                        title: { Text("Account") },
                         icon: { Image(systemName: "person.crop.circle")}
                     )
                 }
-                
-//                NavigationLink(destination: PassWordView()) {
-//                    Label(
-//                        title: { Text("密碼") },
-//                        icon: { Image(systemName: "person.badge.key") }
-//                    )
-//                }
-                
-//                NavigationLink(destination: WifiView()) {
-//                    Label(
-//                        title: { Text("無線網路") },
-//                        icon: { Image(systemName: "wifi")}
-//                    )
-//                }
                 
                 NavigationLink(destination: AboutUsView()) {
                     Label(

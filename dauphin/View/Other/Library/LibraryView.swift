@@ -20,7 +20,7 @@ struct LibraryView: View {
                     }
                     .padding(20)
                     .background(Color.white)
-                    Text("學號：\(authViewModel.ssoStuNo)")
+                    Text("stdID:\(authViewModel.ssoStuNo)")
                         .padding(5)
                 }
                 .background(Color.accentColor)

@@ -44,7 +44,7 @@ struct EventView: View {
                 }
             }.padding(2)
         }
-        .navigationTitle("行事曆")
+        .navigationTitle("calendar")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
@@ -55,15 +55,15 @@ struct EventView: View {
                     print(viewModel.events.count)
                 }) {
                     HStack(spacing: 0) {
-                        Text("上")
+                        Text("First")
                             .font(.subheadline)
-                            .frame(width: 50, height: 30)
+                            .frame(width: 60, height: 30)
                             .background(toggleState ? Color.blue : Color.gray.opacity(0.2))
                             .foregroundColor(toggleState ? .white : .blue)
                             .cornerRadius(8)
-                        Text("下")
+                        Text("Second")
                             .font(.subheadline)
-                            .frame(width: 50, height: 30)
+                            .frame(width: 60, height: 30)
                             .background(!toggleState ? Color.blue : Color.gray.opacity(0.2))
                             .foregroundColor(!toggleState ? .white : .blue)
                             .cornerRadius(8)
@@ -73,12 +73,12 @@ struct EventView: View {
                             .stroke(Color.blue, lineWidth: 1)
                     )
                 }
-                
+        
             }
         }
         .onAppear {
             let queryParameters = [
-                "t": "1"
+                "t": "2"
             ]
             viewModel.loadXMLData(withQuery: queryParameters)
             print(viewModel.events.count)
