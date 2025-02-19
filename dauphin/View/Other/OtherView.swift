@@ -14,14 +14,14 @@ struct OtherView: View {
             List {
                 NavigationLink(destination: EventView()) {
                     Label(
-                        title: { Text("行事曆") },
+                        title: { Text("Calendar") },
                         icon: { Image(systemName: "calendar")}
                     )
                 }
                 
                 NavigationLink(destination: LibraryView(authViewModel: authViewModel)) {
                     Label(
-                        title: { Text("圖書館") },
+                        title: { Text("Library") },
                         icon: { Image(systemName: "books.vertical.fill") }
                     )
                 }
@@ -35,7 +35,7 @@ struct OtherView: View {
                 
                 NavigationLink(destination: WifiView()) {
                     Label(
-                        title: { Text("校園資訊") },
+                        title: { Text("Campus Map") },
                         icon: { Image(systemName: "map.fill")}
                     )
                 }
