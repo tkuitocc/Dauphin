@@ -44,7 +44,7 @@ struct ContentView: View {
                     }
                 SettingView(viewModel: viewModel)
                     .tabItem {
-                        Label("setting", systemImage: "gear")
+                        Label("Setting", systemImage: "gear")
                     }
                 }
                 .sheet(isPresented: $isFirstTime, content: {
